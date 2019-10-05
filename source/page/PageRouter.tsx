@@ -3,6 +3,8 @@ import { observer } from 'mobx-web-cell';
 import { HTMLRouter } from 'cell-router/source';
 
 import { history } from '../model';
+
+import PageEntry from './PageEntry';
 import PageCoach from './Coach';
 import PageStudent from './Student';
 
@@ -20,26 +22,12 @@ export default class PageRouter extends HTMLRouter {
                 return <PageCoach />;
             case 'student':
                 return <PageStudent />;
+            default:
+                return <PageEntry />;
         }
     }
 
     render() {
-        return (
-            <main>
-                <header>
-                    <nav>
-                        <ul>
-                            <li>
-                                <a href="coach">Coach</a>
-                            </li>
-                            <li>
-                                <a href="student">Student</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </header>
-                {this.renderPage()}
-            </main>
-        );
+        return <div>{this.renderPage()}</div>;
     }
 }
