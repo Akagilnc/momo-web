@@ -33,6 +33,7 @@ export default function Card({
                 <a
                     className={`btn btn-${link.level || 'primary'}`}
                     href={link.path}
+                    title={title}
                 >
                     {link.text || 'Enter'}
                 </a>

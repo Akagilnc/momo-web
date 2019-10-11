@@ -13,14 +13,19 @@
     },
     "dependencies": {
         "cell-router": "^2.0.0-beta.5",
+        "classnames": "^2.2.6",
         "mobx": "^5.14.0",
         "mobx-web-cell": "^0.2.3",
         "web-cell": "^2.0.0-beta.5"
     },
     "devDependencies": {
+        "@types/classnames": "^2.2.9",
+        "autoprefixer": "^9.6.4",
         "husky": "^3.0.8",
+        "less": "^3.10.3",
         "lint-staged": "^9.4.2",
         "parcel-bundler": "^1.12.4",
+        "postcss-modules": "^1.4.1",
         "prettier": "^1.18.2",
         "typescript": "^3.6.3"
     },
@@ -31,7 +36,7 @@
         "test": "lint-staged"
     },
     "lint-staged": {
-        "*.{html,md,js,json,ts,tsx}": [
+        "*.{html,md,less,js,json,ts,tsx}": [
             "prettier --write",
             "git add"
         ]
@@ -45,5 +50,13 @@
     "prettier": {
         "singleQuote": true,
         "tabWidth": 4
+    },
+    "postcss": {
+        "modules": true,
+        "plugins": {
+            "autoprefixer": {
+                "grid": true
+            }
+        }
     }
 }

@@ -15,8 +15,8 @@ interface FieldProps extends BaseFieldProps {
     children?: any;
 }
 
-export function FormField({
-    is = 'input',
+export default function FormField({
+    is,
     type = 'text',
     label,
     children,
@@ -38,9 +38,9 @@ export function FormField({
 
     return (
         <section className="form-group">
-            <label htmlFor={UID}>{label}</label>
+            <label htmlFor={UID}>{label || rest.name}</label>
 
-            {field[is]}
+            {!is && children[0] ? children : field[is || 'input']}
         </section>
     );
 }
