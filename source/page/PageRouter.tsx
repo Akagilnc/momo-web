@@ -5,6 +5,7 @@ import { HTMLRouter } from 'cell-router/source';
 import { history } from '../model';
 
 import PageEntry from './PageEntry';
+import PageLogin from './PageLogin';
 import PageCoach from './Coach';
 import PageStudent from './Student';
 
@@ -18,6 +19,8 @@ export default class PageRouter extends HTMLRouter {
 
     renderPage() {
         switch (history.path) {
+            case 'login':
+                return <PageLogin />;
             case 'coach':
                 return <PageCoach />;
             case 'student':
