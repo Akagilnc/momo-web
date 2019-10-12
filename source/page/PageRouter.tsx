@@ -24,6 +24,7 @@ export default class PageRouter extends HTMLRouter {
             case 'coach':
                 return <PageCoach />;
             case 'student':
+            case 'kid':
                 return <PageStudent />;
             default:
                 return <PageEntry />;

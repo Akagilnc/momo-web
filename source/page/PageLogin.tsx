@@ -16,9 +16,11 @@ export default class PageLogin extends mixin() {
 
         this.loading = true;
         try {
-            await createSession(new FormData(event.target as HTMLFormElement));
+            const { groups } = await createSession(
+                new FormData(event.target as HTMLFormElement)
+            );
 
-            history.push('', 'Entry');
+            history.push(groups[0].toLowerCase(), groups[0]);
         } finally {
             this.loading = false;
         }
@@ -35,7 +37,7 @@ export default class PageLogin extends mixin() {
                 <fieldset disabled={loading}>
                     <legend>Log in</legend>
 
-                    <FormField name="email" required label="Email" />
+                    <FormField name="username" required label="Telephone" />
                     <FormField
                         type="password"
                         name="password"

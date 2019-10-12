@@ -63,9 +63,9 @@ export default class CoachProfileEdit extends mixin() {
                     <FormField name="last_name" required label="Last name" />
 
                     <FormField is="select" name="sex" required label="Gender">
-                        <option>Male</option>
-                        <option>Female</option>
-                        <option>Other</option>
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>
+                        <option value="2">Other</option>
                     </FormField>
 
                     <FormField

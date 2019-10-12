@@ -14,7 +14,7 @@ function formToJSON(form: FormData) {
 
 export async function request(
     path: string,
-    method?: string,
+    method?: RequestInit['method'],
     body?: FormData,
     headers: HeadersInit = {},
     options?: RequestInit
@@ -59,23 +59,25 @@ export async function request(
     }
 }
 
-export async function createSession(account: FormData) {
-    const { key } = await request('/rest-auth/login/', 'POST', account);
-
-    localStorage.token = key;
-    localStorage.account = JSON.stringify(
-        await request('/users/get-current-user/')
-    );
-}
-
 export enum UserRole {
-    admin = 'admin',
-    coach = 'coach',
-    student = 'student'
+    Admin = 'Admin',
+    Coach = 'Coach',
+    Kid = 'Kid'
 }
 
 interface UserProfile {
     groups: UserRole[];
+}
+
+export async function createSession(account: FormData) {
+    const { key } = await request('/rest-auth/login/', 'POST', account);
+
+    const user: UserProfile = await request('/users/get-current-user/');
+
+    localStorage.token = key;
+    localStorage.account = JSON.stringify(user);
+
+    return user;
 }
 
 export const getSession = memoize(
@@ -125,4 +127,8 @@ export function updateCoach(data: FormData) {
     data.set('available_times', data.getAll('available_times') + '');
 
     return request('/users/coaches/', 'POST', data);
+}
+
+export function updateStudent(data: FormData) {
+    return request('/users/kids/', 'POST', data);
 }
