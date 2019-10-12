@@ -1,6 +1,6 @@
 import { createCell } from 'web-cell';
 
-import Card from '../component/Card';
+import { Card } from '../component';
 
 export default function PageEntry() {
     return (

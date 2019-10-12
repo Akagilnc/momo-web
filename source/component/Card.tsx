@@ -13,7 +13,7 @@ interface CardData {
     children?: any;
 }
 
-export default function Card({
+export function Card({
     className = '',
     title,
     link,

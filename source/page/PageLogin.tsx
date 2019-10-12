@@ -37,7 +37,11 @@ export default class PageLogin extends mixin() {
                 <fieldset disabled={loading}>
                     <legend>Log in</legend>
 
-                    <FormField name="username" required label="Telephone" />
+                    <FormField
+                        name="username"
+                        required
+                        label="Telephone / User name"
+                    />
                     <FormField
                         type="password"
                         name="password"

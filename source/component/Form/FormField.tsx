@@ -1,5 +1,7 @@
 import { createCell } from 'web-cell';
 
+import { uniqueID } from '../utility';
+
 interface BaseFieldProps {
     name?: string;
     defaultValue?: string;
@@ -22,7 +24,7 @@ export default function FormField({
     children,
     ...rest
 }: FieldProps = {}) {
-    const UID = (Date.now() + Math.random()).toString(36);
+    const UID = uniqueID();
 
     const field = {
         input: (
