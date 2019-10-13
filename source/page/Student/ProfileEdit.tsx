@@ -1,7 +1,7 @@
 import { createCell, component, mixin, watch } from 'web-cell';
 import { FormField } from '../../component';
 
-import { updateStudent, history } from '../../model';
+import { updateStudent, history, session, Student } from '../../model';
 
 @component({
     tagName: 'student-profile-edit',
@@ -25,7 +25,8 @@ export class StudentProfileEdit extends mixin() {
     };
 
     render() {
-        const { loading } = this;
+        const { loading } = this,
+            user = session.user as Student;
 
         return (
             <form
@@ -33,16 +34,28 @@ export class StudentProfileEdit extends mixin() {
                 onReset={() => window.history.back()}
                 onSubmit={this.onSubmit}
             >
+                {user.id && <input type="hidden" name="id" value={user.id} />}
+
                 <h2>学生</h2>
                 <fieldset disabled={loading}>
                     <legend>基本信息</legend>
 
-                    <FormField name="full_name" required label="姓名" />
-
+                    <FormField
+                        name="full_name"
+                        required
+                        label="姓名"
+                        defaultValue={user.full_name}
+                    />
                     <FormField is="select" name="sex" required label="性别">
-                        <option value="1">男</option>
-                        <option value="0">女</option>
-                        <option value="2">其它</option>
+                        <option value="1" selected={user.sex === 1}>
+                            男
+                        </option>
+                        <option value="0" selected={user.sex === 0}>
+                            女
+                        </option>
+                        <option value="2" selected={user.sex === 2}>
+                            其它
+                        </option>
                     </FormField>
 
                     <FormField
@@ -51,6 +64,7 @@ export class StudentProfileEdit extends mixin() {
                         required
                         label="年龄"
                         min="0"
+                        defaultValue={user.age + ''}
                     />
                 </fieldset>
                 <fieldset disabled={loading}>
@@ -60,6 +74,7 @@ export class StudentProfileEdit extends mixin() {
                         name="phone_num"
                         required
                         label="手机号"
+                        defaultValue={user.phone_num}
                     />
                     <FormField
                         type="password"

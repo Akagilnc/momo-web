@@ -7,7 +7,11 @@ export interface Student extends User {
 }
 
 export function updateStudent(data: FormData) {
-    return request('/users/kids/', 'POST', data);
+    const id = data.get('id');
+
+    return id
+        ? request(`/users/kids/${id}/`, 'PUT', data)
+        : request('/users/kids/', 'POST', data);
 }
 
 export function getStudent(id: number): Promise<Student> {

@@ -5,6 +5,7 @@ import { uniqueID } from '../utility';
 interface BaseFieldProps {
     name?: string;
     defaultValue?: string;
+    value?: string;
     required?: boolean;
     label?: string;
     placeholder?: string;

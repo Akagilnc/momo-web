@@ -17,7 +17,11 @@ export interface Coach extends User {
 export function updateCoach(data: FormData) {
     data.set('available_times', data.getAll('available_times') + '');
 
-    return request('/users/coaches/', 'POST', data);
+    const id = data.get('id');
+
+    return id
+        ? request(`/users/coaches/${id}/`, 'PUT', data)
+        : request('/users/coaches/', 'POST', data);
 }
 
 export function getCoach(id: number): Promise<Coach> {

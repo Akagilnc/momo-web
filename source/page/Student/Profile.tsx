@@ -1,38 +1,37 @@
-import { createCell, component, mixin, watch } from 'web-cell';
+import { createCell, component, mixin } from 'web-cell';
 
 import style from './Profile.less';
-import { session, Student, getStudent, GenderSymbol } from '../../model';
+import { session, Student, GenderSymbol } from '../../model';
 
 @component({
     tagName: 'student-profile',
     renderTarget: 'children'
 })
 export class StudentProfile extends mixin() {
-    @watch
-    fields: Student = {} as Student;
-
-    async connectedCallback() {
-        const { id } = session.user;
-
-        if (id) this.fields = await getStudent(id);
-    }
-
     render() {
-        const { full_name, age, sex, phone_num } = this.fields;
+        const { full_name, age, sex, phone_num } = session.user as Student;
 
         return (
-            <ul class={`list-group p-3 ${style.container}`}>
-                <li class="list-group-item">{full_name}</li>
-                <li class="list-group-item">
-                    Age<span>{age}</span>
-                </li>
-                <li class="list-group-item">
-                    Gender<span>{GenderSymbol[sex]}</span>
-                </li>
-                <li class="list-group-item">
-                    Phone<span>{phone_num}</span>
-                </li>
-            </ul>
+            <main className="p-3">
+                <ul class={`list-group p-3 ${style.container}`}>
+                    <li class="list-group-item">{full_name}</li>
+                    <li class="list-group-item">
+                        年龄<span>{age}</span>
+                    </li>
+                    <li class="list-group-item">
+                        性别<span>{GenderSymbol[sex]}</span>
+                    </li>
+                    <li class="list-group-item">
+                        电话<span>{phone_num}</span>
+                    </li>
+                </ul>
+                <a
+                    className="btn btn-block btn-primary mt-3"
+                    href="student/profile/edit"
+                >
+                    编辑
+                </a>
+            </main>
         );
     }
 }
