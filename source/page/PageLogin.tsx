@@ -16,11 +16,11 @@ export default class PageLogin extends mixin() {
 
         this.loading = true;
         try {
-            const { groups } = await createSession(
+            const { group } = await createSession(
                 new FormData(event.target as HTMLFormElement)
             );
 
-            history.push(groups[0].toLowerCase(), groups[0]);
+            history.push(group.toLowerCase(), group);
         } finally {
             this.loading = false;
         }

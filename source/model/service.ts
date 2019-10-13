@@ -66,7 +66,7 @@ export enum UserRole {
 }
 
 interface UserProfile {
-    groups: UserRole[];
+    group: UserRole;
 }
 
 export async function createSession(account: FormData) {
@@ -94,10 +94,14 @@ export function destroySession() {
 export function hasRole(...names: UserRole[]) {
     const user = getSession();
 
-    if (user)
-        for (const role of names) if (user.groups.includes(role)) return true;
+    if (user) for (const role of names) if (user.group === role) return true;
 
     return false;
+}
+
+interface Data<T> {
+    count: number;
+    results: T[];
 }
 
 export interface Country {
@@ -127,6 +131,42 @@ export function updateCoach(data: FormData) {
     data.set('available_times', data.getAll('available_times') + '');
 
     return request('/users/coaches/', 'POST', data);
+}
+
+export enum GenderSymbol {
+    male = '♂',
+    female = '♀',
+    other = '?'
+}
+
+export enum Gender {
+    female,
+    male,
+    other
+}
+
+export interface Coach {
+    id: number;
+    first_name: string;
+    last_name: string;
+    age: number;
+    sex: Gender;
+    avatar: string;
+    country: Country;
+    phone_num: string;
+    email: string;
+    fav_topic: string;
+    introduction: string;
+    available_times: AvailableTime[];
+}
+
+export function getCoaches({ page = 1 } = {}): Promise<Data<Coach>> {
+    return request(
+        '/users/coaches/?' +
+            new URLSearchParams({
+                page: page + ''
+            })
+    );
 }
 
 export function updateStudent(data: FormData) {
