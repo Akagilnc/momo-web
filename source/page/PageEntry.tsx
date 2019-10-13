@@ -9,7 +9,7 @@ export default function PageEntry() {
             <Card
                 className="w-75 text-center"
                 title="Coach"
-                link={{ path: 'coach' }}
+                link={{ path: 'coach/profile/edit' }}
                 image={
                     <i className="fas fa-chalkboard-teacher fa-9x text-primary"></i>
                 }

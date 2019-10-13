@@ -52,6 +52,9 @@ export default class PageLogin extends mixin() {
                         type="submit"
                         className="btn btn-block btn-primary"
                     />
+                    <a className="btn btn-block btn-success" href="entry">
+                        Sign up
+                    </a>
                 </fieldset>
             </form>
         );

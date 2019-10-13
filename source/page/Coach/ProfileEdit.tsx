@@ -14,7 +14,7 @@ import {
     tagName: 'coach-profile-edit',
     renderTarget: 'children'
 })
-export default class CoachProfileEdit extends mixin() {
+export class CoachProfileEdit extends mixin() {
     @watch
     loading = false;
 
@@ -27,8 +27,13 @@ export default class CoachProfileEdit extends mixin() {
     async connectedCallback() {
         this.loading = true;
 
-        this.countries = await getCountries();
-        this.availableTimes = await getAvailableTimes();
+        const [countries, availableTimes] = await Promise.all([
+            getCountries(),
+            getAvailableTimes()
+        ]);
+
+        this.countries = countries;
+        this.availableTimes = availableTimes;
 
         this.loading = false;
     }

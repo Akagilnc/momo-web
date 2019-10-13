@@ -7,7 +7,7 @@ import { history, getSession } from '../model';
 
 import PageEntry from './PageEntry';
 import PageLogin from './PageLogin';
-import PageCoach from './Coach';
+import { CoachProfileEdit, CoachProfile } from './Coach';
 import PageStudent from './Student';
 import { CoachTable, StudentTable, MetaData } from './Admin';
 
@@ -20,6 +20,11 @@ export default class PageRouter extends HTMLRouter {
     protected history = history;
 
     protected menu = [
+        {
+            title: 'Profile',
+            href: 'coach/profile',
+            group: 'Coach'
+        },
         {
             title: 'Coaches',
             href: 'admin/coaches',
@@ -39,10 +44,13 @@ export default class PageRouter extends HTMLRouter {
 
     renderPage() {
         switch (history.path) {
-            case 'login':
-                return <PageLogin />;
+            case 'entry':
+                return <PageEntry />;
             case 'coach':
-                return <PageCoach />;
+            case 'coach/profile':
+                return <CoachProfile />;
+            case 'coach/profile/edit':
+                return <CoachProfileEdit />;
             case 'student':
             case 'kid':
                 return <PageStudent />;
@@ -54,12 +62,12 @@ export default class PageRouter extends HTMLRouter {
             case 'admin/meta':
                 return <MetaData />;
             default:
-                return <PageEntry />;
+                return <PageLogin />;
         }
     }
 
     render() {
-        const { group } = getSession();
+        const { group } = getSession() || {};
 
         return (
             <div className="pt-5">
