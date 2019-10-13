@@ -3,12 +3,11 @@ import { observer } from 'mobx-web-cell';
 import { HTMLRouter } from 'cell-router/source';
 import { NavBar } from '../component';
 
-import { history, getSession } from '../model';
+import { history, session } from '../model';
 
-import PageEntry from './PageEntry';
 import PageLogin from './PageLogin';
-import { CoachProfileEdit, CoachProfile } from './Coach';
-import PageStudent from './Student';
+import { CoachProfile, CoachProfileEdit } from './Coach';
+import { StudentProfile, StudentProfileEdit } from './Student';
 import { CoachTable, StudentTable, MetaData } from './Admin';
 
 @observer
@@ -24,6 +23,11 @@ export default class PageRouter extends HTMLRouter {
             title: 'Profile',
             href: 'coach/profile',
             group: 'Coach'
+        },
+        {
+            title: 'Profile',
+            href: 'student/profile',
+            group: 'Student'
         },
         {
             title: 'Coaches',
@@ -44,8 +48,6 @@ export default class PageRouter extends HTMLRouter {
 
     renderPage() {
         switch (history.path) {
-            case 'entry':
-                return <PageEntry />;
             case 'coach':
             case 'coach/profile':
                 return <CoachProfile />;
@@ -53,7 +55,10 @@ export default class PageRouter extends HTMLRouter {
                 return <CoachProfileEdit />;
             case 'student':
             case 'kid':
-                return <PageStudent />;
+            case 'student/profile':
+                return <StudentProfile />;
+            case 'student/profile/edit':
+                return <StudentProfileEdit />;
             case 'admin':
             case 'admin/coaches':
                 return <CoachTable />;
@@ -67,7 +72,7 @@ export default class PageRouter extends HTMLRouter {
     }
 
     render() {
-        const { group } = getSession() || {};
+        const { group } = session.user;
 
         return (
             <div className="pt-5">

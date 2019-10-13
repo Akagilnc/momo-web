@@ -10,6 +10,10 @@ export function updateStudent(data: FormData) {
     return request('/users/kids/', 'POST', data);
 }
 
+export function getStudent(id: number): Promise<Student> {
+    return request(`/users/kids/${id}/`);
+}
+
 export function getStudents({ page = 1 } = {}): Promise<PageData<Student>> {
     return request(
         '/users/kids/?' +

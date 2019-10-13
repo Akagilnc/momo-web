@@ -1,7 +1,7 @@
 import { createCell, component, mixin, watch } from 'web-cell';
 
 import style from './Profile.less';
-import { getSession, Coach, getCoach, GenderSymbol } from '../../model';
+import { session, Coach, getCoach, GenderSymbol } from '../../model';
 
 @component({
     tagName: 'coach-profile',
@@ -12,9 +12,9 @@ export class CoachProfile extends mixin() {
     fields: Coach = {} as Coach;
 
     async connectedCallback() {
-        const coach = getSession();
+        const { id } = session.user;
 
-        if (coach) this.fields = await getCoach(coach.id);
+        if (id) this.fields = await getCoach(id);
     }
 
     render() {

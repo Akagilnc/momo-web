@@ -1,4 +1,4 @@
-import memoize from 'lodash.memoize';
+import { observable } from 'mobx';
 import { request } from './service';
 
 export enum Gender {
@@ -27,32 +27,33 @@ export enum UserRole {
     Kid = 'Kid'
 }
 
-export async function createSession(account: FormData) {
-    const { key } = await request('/rest-auth/login/', 'POST', account);
+export class Session {
+    @observable
+    user: User = localStorage.account ? JSON.parse(localStorage.account) : {};
 
-    localStorage.token = key;
+    async boot(account: FormData) {
+        const { key } = await request('/rest-auth/login/', 'POST', account);
 
-    const user: User = await request('/users/get-current-user/');
+        localStorage.token = key;
 
-    localStorage.account = JSON.stringify(user);
+        const user: User = await request('/users/get-current-user/');
 
-    return user;
-}
+        localStorage.account = JSON.stringify(user);
 
-export const getSession = memoize(
-    (): User | null => localStorage.account && JSON.parse(localStorage.account)
-);
+        return (this.user = user);
+    }
 
-export function destroySession() {
-    localStorage.clear();
+    destroy() {
+        localStorage.clear();
 
-    location.replace('/');
-}
+        location.replace('/');
+    }
 
-export function hasRole(...names: UserRole[]) {
-    const user = getSession();
+    hasRole(...names: UserRole[]) {
+        const { group } = this.user;
 
-    if (user) for (const role of names) if (user.group === role) return true;
+        if (group) for (const role of names) if (group === role) return true;
 
-    return false;
+        return false;
+    }
 }

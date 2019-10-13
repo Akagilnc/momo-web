@@ -7,7 +7,7 @@ import { updateStudent, history } from '../../model';
     tagName: 'student-profile-edit',
     renderTarget: 'children'
 })
-export default class StudentProfileEdit extends mixin() {
+export class StudentProfileEdit extends mixin() {
     @watch
     loading = false;
 

@@ -3,7 +3,7 @@ import { auto } from 'browser-unhandled-rejection';
 
 import { createCell, render } from 'web-cell';
 
-import { destroySession } from '../model';
+import { session } from '../model';
 
 import PageRouter from './PageRouter';
 
@@ -14,7 +14,7 @@ window.addEventListener(
     ({ reason: { message, response } }) => {
         const { status } = response || '';
 
-        if ([401, 403].includes(status)) destroySession();
+        if ([401, 403].includes(status)) session.destroy();
         else if (status > 299) window.alert(message);
     }
 );
