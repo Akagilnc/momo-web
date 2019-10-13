@@ -44,7 +44,7 @@ export class NavBar extends mixin<NavBarProps>() {
     background = 'dark';
 
     @watch
-    expand = 'lg';
+    expand = 'md';
 
     @watch
     fixed = 'top';
@@ -96,7 +96,7 @@ export class NavBar extends mixin<NavBarProps>() {
                     )}
                     id={UID}
                 >
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav" onClick={() => (this.open = false)}>
                         {menu.map(item => (
                             <NavLink {...item} />
                         ))}

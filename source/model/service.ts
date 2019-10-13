@@ -121,6 +121,14 @@ export interface AvailableTime {
     end_time: string;
 }
 
+export function addAvailableTime(data: FormData): Promise<AvailableTime> {
+    return request('/users/available-time/', 'POST', data);
+}
+
+export function deleteAvailableTime(id: number) {
+    return request(`/users/available-time/${id}/`, 'DELETE');
+}
+
 export async function getAvailableTimes(): Promise<AvailableTime[]> {
     const { results } = await request('/users/available-time/');
 
