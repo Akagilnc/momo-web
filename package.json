@@ -34,11 +34,11 @@
     "scripts": {
         "clean": "rm -rf .cache/ dist/",
         "start": "npm run clean  &&  parcel source/index.html",
-        "build": "npm run clean  &&  parcel build source/index.html",
+        "build": "npm run clean  &&  parcel build source/index.html --public-url .",
         "test": "lint-staged"
     },
     "lint-staged": {
-        "*.{html,md,less,js,json,ts,tsx}": [
+        "*.{html,md,less,js,ts,tsx,json,yml}": [
             "prettier --write",
             "git add"
         ]
