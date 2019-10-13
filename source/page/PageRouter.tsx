@@ -9,7 +9,7 @@ import PageEntry from './PageEntry';
 import PageLogin from './PageLogin';
 import PageCoach from './Coach';
 import PageStudent from './Student';
-import PageAdmin from './Admin';
+import { CoachTable, StudentTable } from './Admin';
 
 @observer
 @component({
@@ -40,7 +40,10 @@ export default class PageRouter extends HTMLRouter {
             case 'kid':
                 return <PageStudent />;
             case 'admin':
-                return <PageAdmin />;
+            case 'admin/coaches':
+                return <CoachTable />;
+            case 'admin/students':
+                return <StudentTable />;
             default:
                 return <PageEntry />;
         }

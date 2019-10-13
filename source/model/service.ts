@@ -145,19 +145,27 @@ export enum Gender {
     other
 }
 
-export interface Coach {
+interface User {
     id: number;
-    first_name: string;
-    last_name: string;
     age: number;
     sex: Gender;
+    phone_num: string;
+}
+
+export interface Coach extends User {
+    first_name: string;
+    last_name: string;
     avatar: string;
     country: Country;
-    phone_num: string;
     email: string;
     fav_topic: string;
     introduction: string;
     available_times: AvailableTime[];
+}
+
+export interface Student extends User {
+    full_name: string;
+    wechat_id: string;
 }
 
 export function getCoaches({ page = 1 } = {}): Promise<Data<Coach>> {
@@ -171,4 +179,13 @@ export function getCoaches({ page = 1 } = {}): Promise<Data<Coach>> {
 
 export function updateStudent(data: FormData) {
     return request('/users/kids/', 'POST', data);
+}
+
+export function getStudents({ page = 1 } = {}): Promise<Data<Student>> {
+    return request(
+        '/users/kids/?' +
+            new URLSearchParams({
+                page: page + ''
+            })
+    );
 }
