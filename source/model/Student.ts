@@ -9,9 +9,11 @@ export interface Student extends User {
 export function updateStudent(data: FormData) {
     const id = data.get('id');
 
-    return id
-        ? request(`/users/kids/${id}/`, 'PUT', data)
-        : request('/users/kids/', 'POST', data);
+    if (!id) return request('/users/kids/', 'POST', data);
+
+    if (!data.get('password')) data.delete('password');
+
+    return request(`/users/kids/${id}/`, 'PATCH', data);
 }
 
 export function getStudent(id: number): Promise<Student> {

@@ -19,9 +19,11 @@ export function updateCoach(data: FormData) {
 
     const id = data.get('id');
 
-    return id
-        ? request(`/users/coaches/${id}/`, 'PUT', data)
-        : request('/users/coaches/', 'POST', data);
+    if (!id) return request('/users/coaches/', 'POST', data);
+
+    if (!data.get('password')) data.delete('password');
+
+    return request(`/users/coaches/${id}/`, 'PATCH', data);
 }
 
 export function getCoach(id: number): Promise<Coach> {

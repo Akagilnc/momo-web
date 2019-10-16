@@ -1,6 +1,7 @@
 import { createCell, component, mixin, watch } from 'web-cell';
 import { FormField, FileInput } from '../../component';
 
+import { formatTime, WeekDay } from '../../utility';
 import {
     Country,
     getCountries,
@@ -139,17 +140,19 @@ export class CoachProfileEdit extends mixin() {
                         multiple
                         label="Available time"
                     >
-                        {availableTimes.map(({ id, start_time, end_time }) => (
-                            <option
-                                value={id}
-                                selected={available_times.find(
-                                    item => item.id === id
-                                )}
-                            >
-                                {new Date(start_time).toLocaleString()}~
-                                {new Date(end_time).toLocaleString()}
-                            </option>
-                        ))}
+                        {availableTimes.map(
+                            ({ id, day, start_time, end_time }) => (
+                                <option
+                                    value={id}
+                                    selected={available_times.find(
+                                        item => item.id === id
+                                    )}
+                                >
+                                    {WeekDay[day - 1]} {formatTime(start_time)}{' '}
+                                    ~ {formatTime(end_time)}
+                                </option>
+                            )
+                        )}
                     </FormField>
 
                     <FormField
@@ -179,7 +182,7 @@ export class CoachProfileEdit extends mixin() {
                     <FormField
                         type="password"
                         name="password"
-                        required
+                        required={!user.id}
                         label="Password"
                     />
                 </fieldset>

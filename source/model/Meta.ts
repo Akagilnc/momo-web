@@ -13,8 +13,11 @@ export async function getCountries(): Promise<Country[]> {
 
 export interface AvailableTime {
     id: number;
+    day: number;
     start_time: string;
     end_time: string;
+    max_kids: number;
+    enabled?: boolean;
 }
 
 export function addAvailableTime(data: FormData): Promise<AvailableTime> {

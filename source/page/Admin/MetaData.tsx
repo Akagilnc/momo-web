@@ -1,6 +1,7 @@
 import { createCell, component, mixin, watch } from 'web-cell';
 import { Table, FormField } from '../../component';
 
+import { formatTime } from '../../utility';
 import {
     AvailableTime,
     getAvailableTimes,
@@ -74,25 +75,27 @@ export class MetaData extends mixin() {
                         <Table center striped hover>
                             <thead>
                                 <tr>
+                                    <th>Day of Week</th>
                                     <th>Start</th>
                                     <th>End</th>
+                                    <th>Max Kids</th>
                                     <th>Operation</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {available_times.map(
-                                    ({ id, start_time, end_time }) => (
+                                    ({
+                                        id,
+                                        day,
+                                        start_time,
+                                        end_time,
+                                        max_kids
+                                    }) => (
                                         <tr>
-                                            <td>
-                                                {new Date(
-                                                    start_time
-                                                ).toLocaleString()}
-                                            </td>
-                                            <td>
-                                                {new Date(
-                                                    end_time
-                                                ).toLocaleString()}
-                                            </td>
+                                            <td>{day}</td>
+                                            <td>{formatTime(start_time)}</td>
+                                            <td>{formatTime(end_time)}</td>
+                                            <td>{max_kids}</td>
                                             <td>
                                                 <button
                                                     type="button"
@@ -112,16 +115,28 @@ export class MetaData extends mixin() {
                         </Table>
 
                         <FormField
-                            type="datetime-local"
+                            type="number"
+                            name="day"
+                            required
+                            label="Day of Week"
+                        />
+                        <FormField
+                            type="time"
                             name="start_time"
                             required
                             label="Start"
                         />
                         <FormField
-                            type="datetime-local"
+                            type="time"
                             name="end_time"
                             required
                             label="End"
+                        />
+                        <FormField
+                            type="number"
+                            name="max_kids"
+                            required
+                            label="Max Kids"
                         />
                         <input type="submit" className="btn btn-primary" />
                     </fieldset>

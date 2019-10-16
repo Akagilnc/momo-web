@@ -79,7 +79,7 @@ export class StudentProfileEdit extends mixin() {
                     <FormField
                         type="password"
                         name="password"
-                        required
+                        required={!user.id}
                         label="密码"
                     />
                 </fieldset>
