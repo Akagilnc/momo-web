@@ -1,3 +1,2 @@
-export { default as FileInput } from './FileInput';
-
-export { default as FormField } from './FormField';
+export * from './FileInput';
+export * from './FormField';

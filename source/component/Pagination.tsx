@@ -36,36 +36,39 @@ export class Pagination extends mixin() {
         const { current, total } = this;
 
         return (
-            <ul class="pagination justify-content-center">
+            <ul className="pagination justify-content-center">
                 <li
-                    class={classNames('page-item', current === 1 && 'disabled')}
+                    className={classNames(
+                        'page-item',
+                        current === 1 && 'disabled'
+                    )}
                 >
-                    <a class="page-link" aria-disabled={current === 1}>
+                    <a className="page-link" aria-disabled={current === 1}>
                         &lt;
                     </a>
                 </li>
                 {total < 2 ? null : (
-                    <li class="page-item">
-                        <a class="page-link">1</a>
+                    <li className="page-item">
+                        <a className="page-link">1</a>
                     </li>
                 )}
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link">
-                        {current} <span class="sr-only">(current)</span>
+                <li className="page-item active" aria-current="page">
+                    <a className="page-link">
+                        {current} <span className="sr-only">(current)</span>
                     </a>
                 </li>
                 {total < 3 ? null : (
-                    <li class="page-item">
-                        <a class="page-link">{total}</a>
+                    <li className="page-item">
+                        <a className="page-link">{total}</a>
                     </li>
                 )}
                 <li
-                    class={classNames(
+                    className={classNames(
                         'page-item',
                         current === total && 'disabled'
                     )}
                 >
-                    <a class="page-link" aria-disabled={current === total}>
+                    <a className="page-link" aria-disabled={current === total}>
                         >
                     </a>
                 </li>

@@ -21,6 +21,8 @@ export function updateCoach(data: FormData) {
 
     if (!id) return request('/users/coaches/', 'POST', data);
 
+    if (!(data.get('avatar') instanceof Blob)) data.delete('avatar');
+
     if (!data.get('password')) data.delete('password');
 
     return request(`/users/coaches/${id}/`, 'PATCH', data);

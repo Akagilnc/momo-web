@@ -7,7 +7,7 @@ import style from './FileInput.less';
     tagName: 'file-input',
     renderTarget: 'children'
 })
-export default class FileInput extends mixin() {
+export class FileInput extends mixin() {
     @attribute
     @watch
     name = '';

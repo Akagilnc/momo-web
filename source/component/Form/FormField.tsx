@@ -18,7 +18,7 @@ interface FieldProps extends BaseFieldProps {
     children?: any;
 }
 
-export default function FormField({
+export function FormField({
     is,
     type = 'text',
     label,

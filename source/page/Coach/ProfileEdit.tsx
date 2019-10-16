@@ -44,11 +44,14 @@ export class CoachProfileEdit extends mixin() {
     onSubmit = async (event: Event) => {
         event.preventDefault();
 
+        const data = new FormData(event.target as HTMLFormElement);
+
         this.loading = true;
         try {
-            await updateCoach(new FormData(event.target as HTMLFormElement));
+            session.setCurrentUser(await updateCoach(data));
 
-            history.push('login', 'Log in');
+            if (!data.get('id')) history.push('login', 'Log in');
+            else history.push('coach', 'Coach Profile');
         } finally {
             this.loading = false;
         }

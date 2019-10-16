@@ -14,11 +14,14 @@ export class StudentProfileEdit extends mixin() {
     onSubmit = async (event: Event) => {
         event.preventDefault();
 
+        const data = new FormData(event.target as HTMLFormElement);
+
         this.loading = true;
         try {
-            await updateStudent(new FormData(event.target as HTMLFormElement));
+            session.setCurrentUser(await updateStudent(data));
 
-            history.push('login', 'Log in');
+            if (!data.get('id')) history.push('login', 'Log in');
+            else history.push('student', 'Student Profile');
         } finally {
             this.loading = false;
         }

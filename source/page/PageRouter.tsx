@@ -3,7 +3,7 @@ import { observer } from 'mobx-web-cell';
 import { HTMLRouter } from 'cell-router/source';
 import { NavBar } from '../component';
 
-import { history, session } from '../model';
+import { history, UserRole, session } from '../model';
 
 import PageLogin from './PageLogin';
 import { CoachProfile, CoachProfileEdit } from './Coach';
@@ -22,27 +22,27 @@ export default class PageRouter extends HTMLRouter {
         {
             title: 'Profile',
             href: 'coach/profile',
-            group: 'Coach'
+            group: UserRole.Coach
         },
         {
             title: 'Profile',
             href: 'student/profile',
-            group: 'Student'
+            group: UserRole.Kid
         },
         {
             title: 'Coaches',
             href: 'admin/coaches',
-            group: 'Admin'
+            group: UserRole.Admin
         },
         {
             title: 'Students',
             href: 'admin/students',
-            group: 'Admin'
+            group: UserRole.Admin
         },
         {
             title: 'Meta data',
             href: 'admin/meta',
-            group: 'Admin'
+            group: UserRole.Admin
         }
     ];
 
@@ -72,13 +72,11 @@ export default class PageRouter extends HTMLRouter {
     }
 
     render() {
-        const { group } = session.user;
-
         return (
             <div className="pt-5">
                 <NavBar
                     title="Momo Chat"
-                    menu={this.menu.filter(item => item.group === group)}
+                    menu={this.menu.filter(item => session.hasRole(item.group))}
                 />
                 {this.renderPage()}
             </div>

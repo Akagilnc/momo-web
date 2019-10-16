@@ -31,20 +31,28 @@ export class Session {
     @observable
     user: User = localStorage.account ? JSON.parse(localStorage.account) : {};
 
+    constructor() {
+        if (localStorage.token) this.getCurrentUser();
+    }
+
+    async getCurrentUser(): Promise<User> {
+        return (this.user = await request('/users/get-current-user/'));
+    }
+
+    async setCurrentUser(data: User) {
+        this.user = { ...this.user, ...data };
+    }
+
     async boot(account: FormData) {
         const { key } = await request('/rest-auth/login/', 'POST', account);
 
         localStorage.token = key;
 
-        const user: User = await request('/users/get-current-user/');
-
-        localStorage.account = JSON.stringify(user);
-
-        return (this.user = user);
+        return this.getCurrentUser();
     }
 
     destroy() {
-        localStorage.clear();
+        delete localStorage.token;
 
         location.replace('/');
     }
@@ -52,8 +60,6 @@ export class Session {
     hasRole(...names: UserRole[]) {
         const { group } = this.user;
 
-        if (group) for (const role of names) if (group === role) return true;
-
-        return false;
+        return group ? names.includes(group) : false;
     }
 }

@@ -20,7 +20,7 @@ export function Table({
 }: TableProps) {
     return (
         <main
-            class={classNames(
+            className={classNames(
                 'table-responsive',
                 `table-${theme}`,
                 striped && 'table-striped',
@@ -28,7 +28,7 @@ export function Table({
             )}
         >
             <table
-                class={classNames(
+                className={classNames(
                     'table',
                     style.table,
                     center && style['cell-center']

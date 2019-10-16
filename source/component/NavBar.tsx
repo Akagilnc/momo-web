@@ -11,10 +11,10 @@ interface NavLinkProps {
 
 export function NavLink({ title, href, active }: NavLinkProps) {
     return (
-        <li class={classNames('nav-item', active && 'active')}>
-            <a class="nav-link" href={href}>
+        <li className={classNames('nav-item', active && 'active')}>
+            <a className="nav-link" href={href}>
                 {title}
-                {!active ? null : <span class="sr-only">(current)</span>}
+                {!active ? null : <span className="sr-only">(current)</span>}
             </a>
         </li>
     );
@@ -89,14 +89,17 @@ export class NavBar extends mixin<NavBarProps>() {
                 </button>
 
                 <main
-                    class={classNames(
+                    className={classNames(
                         'collapse',
                         'navbar-collapse',
                         open && 'show'
                     )}
                     id={UID}
                 >
-                    <ul class="navbar-nav" onClick={() => (this.open = false)}>
+                    <ul
+                        className="navbar-nav"
+                        onClick={() => (this.open = false)}
+                    >
                         {menu.map(item => (
                             <NavLink {...item} />
                         ))}
