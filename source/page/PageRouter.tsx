@@ -7,7 +7,7 @@ import { history, UserRole, session } from '../model';
 
 import PageLogin from './PageLogin';
 import { CoachProfile, CoachProfileEdit } from './Coach';
-import { StudentProfile, StudentProfileEdit } from './Student';
+import { StudentProfile, StudentProfileEdit, CourseList } from './Student';
 import { CoachTable, StudentTable, MetaData } from './Admin';
 
 @observer
@@ -25,8 +25,13 @@ export default class PageRouter extends HTMLRouter {
             group: UserRole.Coach
         },
         {
-            title: 'Profile',
+            title: '个人资料',
             href: 'student/profile',
+            group: UserRole.Kid
+        },
+        {
+            title: '课程',
+            href: 'student/courses',
             group: UserRole.Kid
         },
         {
@@ -55,6 +60,8 @@ export default class PageRouter extends HTMLRouter {
                 return <CoachProfileEdit />;
             case 'student':
             case 'kid':
+            case 'student/courses':
+                return <CourseList />;
             case 'student/profile':
                 return <StudentProfile />;
             case 'student/profile/edit':

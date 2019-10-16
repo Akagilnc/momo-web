@@ -5,7 +5,8 @@ export const history = new History();
 export const session = new Session();
 
 export * from './service';
-export * from './Coach';
-export * from './Meta';
-export * from './Student';
 export * from './User';
+export * from './Meta';
+export * from './Coach';
+export * from './Student';
+export * from './Course';
