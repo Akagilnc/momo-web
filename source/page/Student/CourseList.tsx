@@ -1,5 +1,5 @@
 import { createCell, component, mixin, watch } from 'web-cell';
-import { MediaItem } from '../../component';
+import { MediaItem } from 'boot-cell';
 
 import { Course, getCourses, GenderSymbol } from '../../model';
 import style from '../Coach/Profile.less';
@@ -34,7 +34,8 @@ export class CourseList extends mixin() {
                             introduction
                         },
                         start_time,
-                        end_time
+                        end_time,
+                        kids
                     }) => (
                         <MediaItem
                             className="border p-3 mb-3"
@@ -63,6 +64,9 @@ export class CourseList extends mixin() {
                                         {new Date(start_time).toLocaleString()}{' '}
                                         ~ {new Date(end_time).toLocaleString()}
                                     </span>
+                                </li>
+                                <li>
+                                    学生<span>{kids.length}人</span>
                                 </li>
                             </ul>
                         </MediaItem>

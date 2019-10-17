@@ -1,5 +1,5 @@
 import { createCell, component, mixin, watch } from 'web-cell';
-import { Table, FormField } from '../../component';
+import { Table, FormField } from 'boot-cell';
 
 import { formatTime } from '../../utility';
 import {
