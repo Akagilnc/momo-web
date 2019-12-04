@@ -1,4 +1,4 @@
-import { request, PageData } from './service';
+import { client, PageData } from './service';
 
 import { Coach } from './Coach';
 import { Student } from './Student';
@@ -11,6 +11,8 @@ export interface Course {
     kids: Student[];
 }
 
-export function getCourses(): Promise<PageData<Course>> {
-    return request('/users/courses/');
+export async function getCourses() {
+    const { body } = await client.get<PageData<Course>>('/users/courses/');
+
+    return body;
 }

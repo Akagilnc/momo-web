@@ -1,4 +1,6 @@
-function formToJSON(form: FormData) {
+import { HTTPClient } from 'koajax';
+
+export function formToJSON(form: FormData) {
     const data = {};
     // @ts-ignore
     for (const key of Array.from(new Set(form.keys() as string[]))) {
@@ -10,52 +12,34 @@ function formToJSON(form: FormData) {
     return data;
 }
 
-export async function request(
-    path: string,
-    method?: RequestInit['method'],
-    body?: FormData,
-    headers: HeadersInit = {},
-    options?: RequestInit
-) {
-    if (localStorage.token)
-        headers = { Authorization: `token ${localStorage.token}`, ...headers };
+export const client = new HTTPClient({
+    baseURI: 'https://momochat-background.herokuapp.com',
+    responseType: 'json'
+});
 
-    const response = await fetch(
-        new URL(path, 'https://momochat-background.herokuapp.com') + '',
-        {
-            method,
-            body:
-                headers['Content-Type'] === 'application/json'
-                    ? JSON.stringify(formToJSON(body))
-                    : body,
-            headers,
-            ...options
-        }
-    );
+let token = localStorage.token;
 
-    if (response.status > 299) {
-        let error = await response.json();
+client.use(async ({ request: { method, path, headers }, response }, next) => {
+    if (token) headers!.Authorization = 'token ' + token;
 
+    try {
+        await next();
+    } catch ({ body: error, statusText, ...rest }) {
         if (!error.detail)
             error = Object.entries(error)
                 .map(([key, value]) => `${key}: ${value}`)
                 .join('\n');
 
-        throw Object.assign(
-            new URIError(error.detail || error || response.statusText),
-            {
-                response
-            }
-        );
+        throw Object.assign(new URIError(error.detail || error || statusText), {
+            statusText,
+            ...rest,
+            error
+        });
     }
 
-    switch ((response.headers.get('Content-Type') || '').split(';')[0]) {
-        case 'application/json':
-            return response.json();
-        default:
-            return response.blob();
-    }
-}
+    if (method === 'POST' && path.startsWith('/rest-auth/login/'))
+        localStorage.token = token = response.body.key;
+});
 
 export interface PageData<T> {
     count: number;

@@ -1,30 +1,34 @@
 import { User } from './User';
-import { request, PageData } from './service';
+import { client, PageData } from './service';
 
 export interface Student extends User {
     full_name: string;
     wechat_id: string;
 }
 
-export function updateStudent(data: FormData) {
+export async function updateStudent(data: FormData) {
     const id = data.get('id');
 
-    if (!id) return request('/users/kids/', 'POST', data);
+    if (!id) return (await client.post<Student>('/users/kids/', data)).body;
 
     if (!data.get('password')) data.delete('password');
 
-    return request(`/users/kids/${id}/`, 'PATCH', data);
+    return (await client.patch<Student>(`/users/kids/${id}/`, data)).body;
 }
 
-export function getStudent(id: number): Promise<Student> {
-    return request(`/users/kids/${id}/`);
+export async function getStudent(id: number) {
+    const { body } = await client.get<Student>(`/users/kids/${id}/`);
+
+    return body;
 }
 
-export function getStudents({ page = 1 } = {}): Promise<PageData<Student>> {
-    return request(
+export async function getStudents({ page = 1 } = {}) {
+    const { body } = await client.get<PageData<Student>>(
         '/users/kids/?' +
             new URLSearchParams({
                 page: page + ''
             })
     );
+
+    return body;
 }

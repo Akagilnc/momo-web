@@ -1,12 +1,14 @@
-import { request } from './service';
+import { client, PageData } from './service';
 
 export interface Country {
     id: number;
     name: string;
 }
 
-export async function getCountries(): Promise<Country[]> {
-    const { results } = await request('/users/country/');
+export async function getCountries() {
+    const {
+        body: { results }
+    } = await client.get<PageData<Country>>('/users/country/');
 
     return results;
 }
@@ -20,16 +22,23 @@ export interface AvailableTime {
     enabled?: boolean;
 }
 
-export function addAvailableTime(data: FormData): Promise<AvailableTime> {
-    return request('/users/available-time/', 'POST', data);
+export async function addAvailableTime(data: FormData) {
+    const { body } = await client.post<AvailableTime>(
+        '/users/available-time/',
+        data
+    );
+
+    return body;
 }
 
 export function deleteAvailableTime(id: number) {
-    return request(`/users/available-time/${id}/`, 'DELETE');
+    return client.delete(`/users/available-time/${id}/`);
 }
 
-export async function getAvailableTimes(): Promise<AvailableTime[]> {
-    const { results } = await request('/users/available-time/');
+export async function getAvailableTimes() {
+    const {
+        body: { results }
+    } = await client.get<PageData<AvailableTime>>('/users/available-time/');
 
     return results;
 }

@@ -1,5 +1,5 @@
 import { observable } from 'mobx';
-import { request } from './service';
+import { client } from './service';
 
 export enum Gender {
     female,
@@ -35,8 +35,10 @@ export class Session {
         if (localStorage.token) this.getCurrentUser();
     }
 
-    async getCurrentUser(): Promise<User> {
-        return (this.user = await request('/users/get-current-user/'));
+    async getCurrentUser() {
+        const { body } = await client.get<User>('/users/get-current-user/');
+
+        return (this.user = body);
     }
 
     async setCurrentUser(data: User) {
@@ -44,7 +46,9 @@ export class Session {
     }
 
     async boot(account: FormData) {
-        const { key } = await request('/rest-auth/login/', 'POST', account);
+        const {
+            body: { key }
+        } = await client.post('/rest-auth/login/', account);
 
         localStorage.token = key;
 

@@ -1,6 +1,6 @@
 import { createCell, component } from 'web-cell';
 import { observer } from 'mobx-web-cell';
-import { HTMLRouter } from 'cell-router/source';
+import { HTMLRouter, matchRoutes } from 'cell-router/source';
 import { NavBar } from 'boot-cell';
 
 import { history, UserRole, session } from '../model';
@@ -51,33 +51,6 @@ export default class PageRouter extends HTMLRouter {
         }
     ];
 
-    renderPage() {
-        switch (history.path) {
-            case 'coach':
-            case 'coach/profile':
-                return <CoachProfile />;
-            case 'coach/profile/edit':
-                return <CoachProfileEdit />;
-            case 'student':
-            case 'kid':
-            case 'student/courses':
-                return <CourseList />;
-            case 'student/profile':
-                return <StudentProfile />;
-            case 'student/profile/edit':
-                return <StudentProfileEdit />;
-            case 'admin':
-            case 'admin/coaches':
-                return <CoachTable />;
-            case 'admin/students':
-                return <StudentTable />;
-            case 'admin/meta':
-                return <MetaData />;
-            default:
-                return <PageLogin />;
-        }
-    }
-
     render() {
         return (
             <div className="pt-5">
@@ -85,7 +58,37 @@ export default class PageRouter extends HTMLRouter {
                     title="Momo Chat"
                     menu={this.menu.filter(item => session.hasRole(item.group))}
                 />
-                {this.renderPage()}
+                {matchRoutes(
+                    [
+                        {
+                            paths: ['coach/profile/edit'],
+                            component: CoachProfileEdit
+                        },
+                        {
+                            paths: ['coach/profile', 'coach'],
+                            component: CoachProfile
+                        },
+                        {
+                            paths: ['student/profile/edit'],
+                            component: StudentProfileEdit
+                        },
+                        {
+                            paths: ['student/profile'],
+                            component: StudentProfile
+                        },
+                        {
+                            paths: ['student/courses', 'student', 'kid'],
+                            component: CourseList
+                        },
+                        { paths: ['admin/meta'], component: MetaData },
+                        { paths: ['admin/students'], component: StudentTable },
+                        {
+                            paths: ['admin/coaches', 'admin'],
+                            component: CoachTable
+                        }
+                    ],
+                    history.path
+                ) || <PageLogin />}
             </div>
         );
     }

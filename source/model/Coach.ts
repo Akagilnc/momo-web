@@ -1,4 +1,4 @@
-import { request, PageData } from './service';
+import { client, PageData } from './service';
 
 import { User } from './User';
 import { Country, AvailableTime } from './Meta';
@@ -14,29 +14,33 @@ export interface Coach extends User {
     available_times: AvailableTime[];
 }
 
-export function updateCoach(data: FormData) {
+export async function updateCoach(data: FormData) {
     data.set('available_times', data.getAll('available_times') + '');
 
     const id = data.get('id');
 
-    if (!id) return request('/users/coaches/', 'POST', data);
+    if (!id) return (await client.post<Coach>('/users/coaches/', data)).body;
 
     if (!(data.get('avatar') instanceof Blob)) data.delete('avatar');
 
     if (!data.get('password')) data.delete('password');
 
-    return request(`/users/coaches/${id}/`, 'PATCH', data);
+    return (await client.patch<Coach>(`/users/coaches/${id}/`, data)).body;
 }
 
-export function getCoach(id: number): Promise<Coach> {
-    return request(`/users/coaches/${id}/`);
+export async function getCoach(id: number) {
+    const { body } = await client.get<Coach>(`/users/coaches/${id}/`);
+
+    return body;
 }
 
-export function getCoaches({ page = 1 } = {}): Promise<PageData<Coach>> {
-    return request(
+export async function getCoaches({ page = 1 } = {}) {
+    const { body } = await client.get<PageData<Coach>>(
         '/users/coaches/?' +
             new URLSearchParams({
                 page: page + ''
             })
     );
+
+    return body;
 }
