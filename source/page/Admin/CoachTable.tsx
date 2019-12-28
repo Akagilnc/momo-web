@@ -1,5 +1,5 @@
 import { createCell, component, mixin, watch } from 'web-cell';
-import { Table, Pagination } from 'boot-cell';
+import { Table, Pagination } from 'boot-cell/source';
 
 import { Coach, getCoaches, GenderSymbol } from '../../model';
 

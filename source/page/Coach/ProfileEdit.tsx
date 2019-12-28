@@ -1,65 +1,51 @@
-import { createCell, component, mixin, watch } from 'web-cell';
-import { FormField, FileInput } from 'boot-cell';
+import { createCell, component, mixin } from 'web-cell';
+import { observer } from 'mobx-web-cell';
+import { FormField, FileInput } from 'boot-cell/source/Form';
 
 import { formatTime, WeekDay } from '../../utility';
 import {
-    Country,
-    getCountries,
-    AvailableTime,
-    getAvailableTimes,
     updateCoach,
-    history,
     session,
-    Coach
+    history,
+    Coach,
+    Country,
+    AvailableTime,
+    Gender,
+    meta
 } from '../../model';
 
+interface EditState {
+    loading: boolean;
+}
+
+@observer
 @component({
     tagName: 'coach-profile-edit',
     renderTarget: 'children'
 })
-export class CoachProfileEdit extends mixin() {
-    @watch
-    loading = false;
-
-    @watch
-    countries: Country[] = [];
-
-    @watch
-    availableTimes: AvailableTime[] = [];
-
-    async connectedCallback() {
-        this.loading = true;
-
-        const [countries, availableTimes] = await Promise.all([
-            getCountries(),
-            getAvailableTimes()
-        ]);
-
-        this.countries = countries;
-        this.availableTimes = availableTimes;
-
-        this.loading = false;
-    }
+export class CoachProfileEdit extends mixin<{}, EditState>() {
+    state = {
+        loading: false
+    };
 
     onSubmit = async (event: Event) => {
         event.preventDefault();
 
         const data = new FormData(event.target as HTMLFormElement);
 
-        this.loading = true;
+        this.setState({ loading: true });
         try {
             session.setCurrentUser(await updateCoach(data));
 
             if (!data.get('id')) history.push('login', 'Log in');
             else history.push('coach', 'Coach Profile');
         } finally {
-            this.loading = false;
+            this.setState({ loading: false });
         }
     };
 
-    render() {
-        const { loading, countries, availableTimes } = this,
-            user = session.user as Coach;
+    render(_, { loading }: EditState) {
+        const user = session.user as Coach;
 
         const country = user.country || ({} as Country),
             available_times = user.available_times || ([] as AvailableTime[]);
@@ -89,15 +75,16 @@ export class CoachProfileEdit extends mixin() {
                         defaultValue={user.last_name}
                     />
                     <FormField is="select" name="sex" required label="Gender">
-                        <option value="1" selected={user.sex === 1}>
-                            Male
-                        </option>
-                        <option value="0" selected={user.sex === 0}>
-                            Female
-                        </option>
-                        <option value="2" selected={user.sex === 2}>
-                            Other
-                        </option>
+                        {Object.entries(Gender).map(([key, value]) =>
+                            isNaN(+key) ? (
+                                <option
+                                    value={value}
+                                    selected={user.sex === +value}
+                                >
+                                    {key}
+                                </option>
+                            ) : null
+                        )}
                     </FormField>
 
                     <FormField
@@ -114,7 +101,7 @@ export class CoachProfileEdit extends mixin() {
                         required
                         label="Country"
                     >
-                        {countries.map(({ id, name }) => (
+                        {meta.countries.map(({ id, name }) => (
                             <option value={id} selected={id === country.id}>
                                 {name}
                             </option>
@@ -143,7 +130,7 @@ export class CoachProfileEdit extends mixin() {
                         multiple
                         label="Available time"
                     >
-                        {availableTimes.map(
+                        {meta.availableTimes.map(
                             ({ id, day, start_time, end_time }) => (
                                 <option
                                     value={id}

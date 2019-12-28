@@ -11,9 +11,7 @@ auto();
 
 window.addEventListener(
     'unhandledrejection',
-    ({ reason: { message, response } }) => {
-        const { status } = response || '';
-
+    ({ reason: { message, status } }) => {
         if ([401, 403].includes(status)) session.destroy();
         else if (status > 299) window.alert(message);
     }

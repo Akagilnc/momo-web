@@ -1,7 +1,7 @@
 import { createCell, component } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { HTMLRouter, matchRoutes } from 'cell-router/source';
-import { NavBar } from 'boot-cell';
+import { NavBar } from 'boot-cell/source/Navigator/NavBar';
 
 import { history, UserRole, session } from '../model';
 

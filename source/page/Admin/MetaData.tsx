@@ -1,69 +1,49 @@
-import { createCell, component, mixin, watch } from 'web-cell';
-import { Table, FormField } from 'boot-cell';
+import { createCell, component, mixin } from 'web-cell';
+import { observer } from 'mobx-web-cell';
+import { Table, FormField } from 'boot-cell/source';
 
 import { formatTime } from '../../utility';
-import {
-    AvailableTime,
-    getAvailableTimes,
-    addAvailableTime,
-    deleteAvailableTime
-} from '../../model';
+import { meta } from '../../model';
 
+interface MetaState {
+    timeLoading: boolean;
+}
+
+@observer
 @component({
     tagName: 'meta-data',
     renderTarget: 'children'
 })
-export class MetaData extends mixin() {
-    @watch
-    timeLoading = false;
-
-    @watch
-    available_times: AvailableTime[] = [];
-
-    async connectedCallback() {
-        this.timeLoading = true;
-
-        this.available_times = await getAvailableTimes();
-
-        this.timeLoading = false;
-    }
+export class MetaData extends mixin<{}, MetaState>() {
+    state = {
+        timeLoading: false
+    };
 
     onAdd = async (event: Event) => {
         event.preventDefault();
 
-        this.timeLoading = true;
+        this.setState({ timeLoading: true });
         try {
-            const time = await addAvailableTime(
+            await meta.addAvailableTime(
                 new FormData(event.target as HTMLFormElement)
             );
-
-            this.available_times = [time, ...this.available_times];
         } finally {
-            this.timeLoading = false;
+            this.setState({ timeLoading: false });
         }
     };
 
     async onDelete(id: number, event: MouseEvent) {
         event.preventDefault();
 
-        this.timeLoading = true;
+        this.setState({ timeLoading: true });
         try {
-            await deleteAvailableTime(id);
-
-            const { available_times } = this;
-
-            this.available_times = available_times.splice(
-                available_times.findIndex(item => item.id === id),
-                1
-            );
+            await meta.deleteAvailableTime(id);
         } finally {
-            this.timeLoading = false;
+            this.setState({ timeLoading: false });
         }
     }
 
-    render() {
-        const { timeLoading, available_times } = this;
-
+    render(_, { timeLoading }: MetaState) {
         return (
             <main className="p-3">
                 <h2>Meta data</h2>
@@ -83,7 +63,7 @@ export class MetaData extends mixin() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {available_times.map(
+                                {meta.availableTimes.map(
                                     ({
                                         id,
                                         day,

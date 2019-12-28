@@ -1,16 +1,9 @@
+import { observable } from 'mobx';
 import { client, PageData } from './service';
 
 export interface Country {
     id: number;
     name: string;
-}
-
-export async function getCountries() {
-    const {
-        body: { results }
-    } = await client.get<PageData<Country>>('/users/country/');
-
-    return results;
 }
 
 export interface AvailableTime {
@@ -22,23 +15,48 @@ export interface AvailableTime {
     enabled?: boolean;
 }
 
-export async function addAvailableTime(data: FormData) {
-    const { body } = await client.post<AvailableTime>(
-        '/users/available-time/',
-        data
-    );
+export class Meta {
+    @observable
+    countries: Country[] = [];
 
-    return body;
-}
+    @observable
+    availableTimes: AvailableTime[] = [];
 
-export function deleteAvailableTime(id: number) {
-    return client.delete(`/users/available-time/${id}/`);
-}
+    constructor() {
+        this.getCountries();
+        this.getAvailableTimes();
+    }
 
-export async function getAvailableTimes() {
-    const {
-        body: { results }
-    } = await client.get<PageData<AvailableTime>>('/users/available-time/');
+    async getCountries() {
+        const {
+            body: { results }
+        } = await client.get<PageData<Country>>('/users/country/');
 
-    return results;
+        return (this.countries = results);
+    }
+
+    async getAvailableTimes() {
+        const {
+            body: { results }
+        } = await client.get<PageData<AvailableTime>>('/users/available-time/');
+
+        return (this.availableTimes = results);
+    }
+
+    async addAvailableTime(data: FormData) {
+        const { body } = await client.post<AvailableTime>(
+            '/users/available-time/',
+            data
+        );
+
+        this.availableTimes = this.availableTimes.concat(body);
+    }
+
+    async deleteAvailableTime(id: number) {
+        await client.delete(`/users/available-time/${id}/`);
+
+        this.availableTimes = this.availableTimes.filter(
+            item => item.id === id
+        );
+    }
 }

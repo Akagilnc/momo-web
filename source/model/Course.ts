@@ -11,8 +11,17 @@ export interface Course {
     kids: Student[];
 }
 
-export async function getCourses() {
-    const { body } = await client.get<PageData<Course>>('/users/courses/');
+export interface CourseFilter {
+    available_time?: string;
+    sex?: string;
+    country?: string;
+    [key: string]: string;
+}
+
+export async function getCourses(filter: CourseFilter = {}) {
+    const { body } = await client.get<PageData<Course>>(
+        '/users/courses/?' + new URLSearchParams(filter)
+    );
 
     return body;
 }

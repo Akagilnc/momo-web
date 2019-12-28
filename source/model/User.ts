@@ -2,15 +2,15 @@ import { observable } from 'mobx';
 import { client } from './service';
 
 export enum Gender {
-    female,
-    male,
-    other
+    Female,
+    Male,
+    Other
 }
 
 export enum GenderSymbol {
-    male = '♂',
-    female = '♀',
-    other = '?'
+    Female = '♀',
+    Male = '♂',
+    Other = '?'
 }
 
 export interface User {
