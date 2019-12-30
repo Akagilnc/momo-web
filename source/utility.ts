@@ -1,3 +1,5 @@
+import { AvailableTime } from './model';
+
 const formatterTime = Intl.DateTimeFormat('en-US', {
     hour: 'numeric',
     minute: 'numeric'
@@ -16,3 +18,9 @@ export const WeekDay = [
     'Saturday',
     'Sunday'
 ];
+
+export function timeSection({ day, start_time, end_time }: AvailableTime) {
+    return `${WeekDay[day - 1]} ${formatTime(start_time)} ~ ${formatTime(
+        end_time
+    )}`;
+}

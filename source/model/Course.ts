@@ -25,3 +25,7 @@ export async function getCourses(filter: CourseFilter = {}) {
 
     return body;
 }
+
+export function bookCourse(coach: number, available_time: number) {
+    return client.post('/users/courses/', { coach, available_time });
+}

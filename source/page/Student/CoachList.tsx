@@ -2,25 +2,26 @@ import { createCell, component, mixin, on } from 'web-cell';
 import { FormField, MediaItem } from 'boot-cell/source';
 
 import {
-    Course,
-    CourseFilter,
-    getCourses,
+    Coach,
+    CoachFilter,
+    getCoaches,
     meta,
     Gender,
-    GenderSymbol
+    GenderSymbol,
+    history
 } from '../../model';
+import { timeSection } from '../../utility';
 import style from '../Coach/Profile.less';
-import { formatTime } from '../../utility';
 
-interface CourseState {
-    list: Course[];
+interface CoachListState {
+    list: Coach[];
 }
 
 @component({
-    tagName: 'course-list',
+    tagName: 'coach-list',
     renderTarget: 'children'
 })
-export class CourseList extends mixin<{}, CourseState>() {
+export class CoachList extends mixin<{}, CoachListState>() {
     state = {
         list: []
     };
@@ -29,8 +30,8 @@ export class CourseList extends mixin<{}, CourseState>() {
         this.changeFilter();
     }
 
-    async changeFilter(options?: CourseFilter) {
-        this.setState({ list: (await getCourses(options)).results });
+    async changeFilter(options?: CoachFilter) {
+        this.setState({ list: (await getCoaches(options)).results });
     }
 
     @on('change', 'form select[name]')
@@ -40,10 +41,10 @@ export class CourseList extends mixin<{}, CourseState>() {
         this.changeFilter({ [name]: value });
     }
 
-    render(_, { list }: CourseState) {
+    render(_, { list }: CoachListState) {
         return (
             <div className="p-3">
-                <h2>课程</h2>
+                <h2>教练</h2>
 
                 <details className="my-3">
                     <summary>筛选</summary>
@@ -51,17 +52,14 @@ export class CourseList extends mixin<{}, CourseState>() {
                         <FormField
                             is="select"
                             name="available_times"
-                            label="课时"
+                            label="时段"
                         >
                             <option value="">（不限）</option>
-                            {meta.availableTimes.map(
-                                ({ id, start_time, end_time }) => (
-                                    <option value={id}>
-                                        {formatTime(start_time)} ~{' '}
-                                        {formatTime(end_time)}
-                                    </option>
-                                )
-                            )}
+                            {meta.availableTimes.map(section => (
+                                <option value={section.id}>
+                                    {timeSection(section)}
+                                </option>
+                            ))}
                         </FormField>
 
                         <FormField is="select" name="gender" label="性别">
@@ -84,20 +82,17 @@ export class CourseList extends mixin<{}, CourseState>() {
 
                 {list.map(
                     ({
-                        coach: {
-                            first_name,
-                            last_name,
-                            avatar,
-                            age,
-                            sex,
-                            country,
-                            fav_topic
-                        },
-                        start_time,
-                        end_time,
-                        kids
+                        id,
+                        first_name,
+                        last_name,
+                        avatar,
+                        age,
+                        sex,
+                        country,
+                        fav_topic
                     }) => (
                         <MediaItem
+                            key={id}
                             className="border p-3 mb-3"
                             title={`${first_name}·${last_name}`}
                             image={
@@ -105,6 +100,9 @@ export class CourseList extends mixin<{}, CourseState>() {
                                     className={`${style.avatar} mr-3`}
                                     src={avatar}
                                 />
+                            }
+                            onClick={() =>
+                                history.push('student/coach?coachId=' + id)
                             }
                         >
                             <ul className={`list-unstyled ${style.container}`}>
@@ -119,16 +117,6 @@ export class CourseList extends mixin<{}, CourseState>() {
                                 </li>
                                 <li>
                                     擅长话题<span>{fav_topic}</span>
-                                </li>
-                                <li>
-                                    时间
-                                    <span>
-                                        {formatTime(start_time)} ~{' '}
-                                        {formatTime(end_time)}
-                                    </span>
-                                </li>
-                                <li>
-                                    学生<span>{kids.length}人</span>
                                 </li>
                             </ul>
                         </MediaItem>

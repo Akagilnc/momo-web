@@ -1,3 +1,4 @@
 export * from './ProfileEdit';
 export * from './Profile';
-export * from './CourseList';
+export * from './CoachList';
+export * from './CoachDetail';

@@ -6,8 +6,13 @@ import { NavBar } from 'boot-cell/source/Navigator/NavBar';
 import { history, UserRole, session } from '../model';
 
 import PageLogin from './PageLogin';
-import { CoachProfile, CoachProfileEdit } from './Coach';
-import { StudentProfile, StudentProfileEdit, CourseList } from './Student';
+import { CoachProfile, CoachProfileEdit, LessonList } from './Coach';
+import {
+    StudentProfile,
+    StudentProfileEdit,
+    CoachList,
+    CoachDetail
+} from './Student';
 import { CoachTable, StudentTable, MetaData } from './Admin';
 
 @observer
@@ -25,13 +30,18 @@ export default class PageRouter extends HTMLRouter {
             group: UserRole.Coach
         },
         {
+            title: 'Lessons',
+            href: 'coach/lessons',
+            group: UserRole.Coach
+        },
+        {
             title: '个人资料',
             href: 'student/profile',
             group: UserRole.Kid
         },
         {
-            title: '课程',
-            href: 'student/courses',
+            title: '教练',
+            href: 'student/coaches',
             group: UserRole.Kid
         },
         {
@@ -61,6 +71,10 @@ export default class PageRouter extends HTMLRouter {
                 {matchRoutes(
                     [
                         {
+                            paths: ['coach/lessons'],
+                            component: LessonList
+                        },
+                        {
                             paths: ['coach/profile/edit'],
                             component: CoachProfileEdit
                         },
@@ -77,8 +91,12 @@ export default class PageRouter extends HTMLRouter {
                             component: StudentProfile
                         },
                         {
-                            paths: ['student/courses', 'student', 'kid'],
-                            component: CourseList
+                            paths: ['student/coach'],
+                            component: CoachDetail
+                        },
+                        {
+                            paths: ['student/coaches', 'student', 'kid'],
+                            component: CoachList
                         },
                         { paths: ['admin/meta'], component: MetaData },
                         { paths: ['admin/students'], component: StudentTable },

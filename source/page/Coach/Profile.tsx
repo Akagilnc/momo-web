@@ -1,9 +1,10 @@
 import { createCell, component, mixin } from 'web-cell';
 import { observer } from 'mobx-web-cell';
-import { WeekDay, formatTime } from '../../utility';
+import { Button } from 'boot-cell/source/Form/Button';
 
-import style from './Profile.less';
 import { session, Coach, GenderSymbol } from '../../model';
+import { timeSection } from '../../utility';
+import style from './Profile.less';
 
 @observer
 @component({
@@ -30,7 +31,7 @@ export class CoachProfile extends mixin() {
             <main className="p-3">
                 <ul className={`list-group ${style.container}`}>
                     <li className="list-group-item">
-                        <img className="img-thumbnail" src={avatar} />
+                        <img className={style.avatar} src={avatar} />
                         {first_name}·{last_name}
                     </li>
                     <li className="list-group-item">
@@ -40,7 +41,7 @@ export class CoachProfile extends mixin() {
                         Gender<span>{GenderSymbol[sex]}</span>
                     </li>
                     <li className="list-group-item">
-                        Country<span>{(country || {}).name}</span>
+                        Country<span>{country?.name}</span>
                     </li>
                     <li className="list-group-item">
                         Phone<span>{phone_num}</span>
@@ -57,24 +58,15 @@ export class CoachProfile extends mixin() {
                     <li className="list-group-item">
                         Available Times
                         <ul>
-                            {available_times.map(
-                                ({ day, start_time, end_time }) => (
-                                    <li>
-                                        {WeekDay[day - 1]}{' '}
-                                        {formatTime(start_time)} ~{' '}
-                                        {formatTime(end_time)}
-                                    </li>
-                                )
-                            )}
+                            {available_times?.map(section => (
+                                <li>{timeSection(section)}</li>
+                            ))}
                         </ul>
                     </li>
                 </ul>
-                <a
-                    className="btn btn-block btn-primary mt-3"
-                    href="coach/profile/edit"
-                >
+                <Button block className="mt-3" href="coach/profile/edit">
                     Edit
-                </a>
+                </Button>
             </main>
         );
     }

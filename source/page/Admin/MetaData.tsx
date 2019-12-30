@@ -2,7 +2,7 @@ import { createCell, component, mixin } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { Table, FormField } from 'boot-cell/source';
 
-import { formatTime } from '../../utility';
+import { WeekDay, formatTime } from '../../utility';
 import { meta } from '../../model';
 
 interface MetaState {
@@ -72,7 +72,7 @@ export class MetaData extends mixin<{}, MetaState>() {
                                         max_kids
                                     }) => (
                                         <tr>
-                                            <td>{day}</td>
+                                            <td>{WeekDay[day - 1]}</td>
                                             <td>{formatTime(start_time)}</td>
                                             <td>{formatTime(end_time)}</td>
                                             <td>{max_kids}</td>

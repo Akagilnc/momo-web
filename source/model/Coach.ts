@@ -1,7 +1,8 @@
-import { client, PageData } from './service';
+import { client, PageFilter, PageData } from './service';
 
 import { User } from './User';
 import { Country, AvailableTime } from './Meta';
+import { Course } from './Course';
 
 export interface Coach extends User {
     first_name: string;
@@ -12,6 +13,7 @@ export interface Coach extends User {
     fav_topic: string;
     introduction: string;
     available_times: AvailableTime[];
+    courses?: Course[];
 }
 
 export async function updateCoach(data: FormData) {
@@ -34,12 +36,16 @@ export async function getCoach(id: number) {
     return body;
 }
 
-export async function getCoaches({ page = 1 } = {}) {
+export interface CoachFilter extends PageFilter {
+    available_time?: string;
+    sex?: string;
+    country?: string;
+    [key: string]: string;
+}
+
+export async function getCoaches(filter: CoachFilter = {}) {
     const { body } = await client.get<PageData<Coach>>(
-        '/users/coaches/?' +
-            new URLSearchParams({
-                page: page + ''
-            })
+        '/users/coaches/?' + new URLSearchParams(filter)
     );
 
     return body;

@@ -29,7 +29,7 @@ export class StudentProfileEdit extends mixin() {
 
     render() {
         const { loading } = this,
-            user = session.user as Student;
+            { id, full_name, sex, age, phone_num } = session.user as Student;
 
         return (
             <form
@@ -37,7 +37,7 @@ export class StudentProfileEdit extends mixin() {
                 onReset={() => window.history.back()}
                 onSubmit={this.onSubmit}
             >
-                {user.id && <input type="hidden" name="id" value={user.id} />}
+                {id && <input type="hidden" name="id" value={id} />}
 
                 <h2>学生</h2>
                 <fieldset disabled={loading}>
@@ -47,16 +47,16 @@ export class StudentProfileEdit extends mixin() {
                         name="full_name"
                         required
                         label="姓名"
-                        defaultValue={user.full_name}
+                        defaultValue={full_name}
                     />
                     <FormField is="select" name="sex" required label="性别">
-                        <option value="1" selected={user.sex === 1}>
-                            男
-                        </option>
-                        <option value="0" selected={user.sex === 0}>
+                        <option value="0" selected={sex === 0}>
                             女
                         </option>
-                        <option value="2" selected={user.sex === 2}>
+                        <option value="1" selected={sex === 1}>
+                            男
+                        </option>
+                        <option value="2" selected={sex === 2}>
                             其它
                         </option>
                     </FormField>
@@ -67,7 +67,7 @@ export class StudentProfileEdit extends mixin() {
                         required
                         label="年龄"
                         min="0"
-                        defaultValue={user.age + ''}
+                        defaultValue={age + ''}
                     />
                 </fieldset>
                 <fieldset disabled={loading}>
@@ -77,12 +77,12 @@ export class StudentProfileEdit extends mixin() {
                         name="phone_num"
                         required
                         label="手机号"
-                        defaultValue={user.phone_num}
+                        defaultValue={phone_num}
                     />
                     <FormField
                         type="password"
                         name="password"
-                        required={!user.id}
+                        required={!id}
                         label="密码"
                     />
                 </fieldset>

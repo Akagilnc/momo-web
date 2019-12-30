@@ -20,7 +20,7 @@ export const client = new HTTPClient({
 let token = localStorage.token;
 
 client.use(async ({ request: { method, path, headers }, response }, next) => {
-    if (token) headers!.Authorization = 'token ' + token;
+    if (token) headers['Authorization'] = 'token ' + token;
 
     try {
         await next();
@@ -40,6 +40,10 @@ client.use(async ({ request: { method, path, headers }, response }, next) => {
     if (method === 'POST' && path.startsWith('/rest-auth/login/'))
         localStorage.token = token = response.body.key;
 });
+
+export interface PageFilter {
+    page?: string;
+}
 
 export interface PageData<T> {
     count: number;

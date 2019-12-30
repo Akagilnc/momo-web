@@ -2,7 +2,6 @@ import { createCell, component, mixin } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { FormField, FileInput } from 'boot-cell/source/Form';
 
-import { formatTime, WeekDay } from '../../utility';
 import {
     updateCoach,
     session,
@@ -13,6 +12,7 @@ import {
     Gender,
     meta
 } from '../../model';
+import { timeSection } from '../../utility';
 
 interface EditState {
     loading: boolean;
@@ -45,10 +45,20 @@ export class CoachProfileEdit extends mixin<{}, EditState>() {
     };
 
     render(_, { loading }: EditState) {
-        const user = session.user as Coach;
-
-        const country = user.country || ({} as Country),
-            available_times = user.available_times || ([] as AvailableTime[]);
+        const {
+            id,
+            first_name,
+            last_name,
+            sex,
+            age,
+            avatar,
+            introduction,
+            fav_topic,
+            phone_num,
+            email,
+            country = {} as Country,
+            available_times = [] as AvailableTime[]
+        } = session.user as Coach;
 
         return (
             <form
@@ -56,7 +66,7 @@ export class CoachProfileEdit extends mixin<{}, EditState>() {
                 onReset={() => window.history.back()}
                 onSubmit={this.onSubmit}
             >
-                {user.id && <input type="hidden" name="id" value={user.id} />}
+                {id && <input type="hidden" name="id" value={id} />}
 
                 <h2>Coach</h2>
                 <fieldset disabled={loading}>
@@ -66,21 +76,18 @@ export class CoachProfileEdit extends mixin<{}, EditState>() {
                         name="first_name"
                         required
                         label="First name"
-                        defaultValue={user.first_name}
+                        defaultValue={first_name}
                     />
                     <FormField
                         name="last_name"
                         required
                         label="Last name"
-                        defaultValue={user.last_name}
+                        defaultValue={last_name}
                     />
                     <FormField is="select" name="sex" required label="Gender">
                         {Object.entries(Gender).map(([key, value]) =>
                             isNaN(+key) ? (
-                                <option
-                                    value={value}
-                                    selected={user.sex === +value}
-                                >
+                                <option value={value} selected={sex === +value}>
                                     {key}
                                 </option>
                             ) : null
@@ -93,7 +100,7 @@ export class CoachProfileEdit extends mixin<{}, EditState>() {
                         required
                         label="Age"
                         min="0"
-                        defaultValue={user.age + ''}
+                        defaultValue={age + ''}
                     />
                     <FormField
                         is="select"
@@ -109,7 +116,7 @@ export class CoachProfileEdit extends mixin<{}, EditState>() {
                     </FormField>
 
                     <FormField label="Avatar">
-                        <FileInput name="avatar" required value={user.avatar} />
+                        <FileInput name="avatar" required value={avatar} />
                     </FormField>
 
                     <FormField
@@ -117,7 +124,7 @@ export class CoachProfileEdit extends mixin<{}, EditState>() {
                         name="introduction"
                         required
                         label="Introduction"
-                        defaultValue={user.introduction}
+                        defaultValue={introduction}
                     />
                 </fieldset>
                 <fieldset disabled={loading}>
@@ -130,26 +137,23 @@ export class CoachProfileEdit extends mixin<{}, EditState>() {
                         multiple
                         label="Available time"
                     >
-                        {meta.availableTimes.map(
-                            ({ id, day, start_time, end_time }) => (
-                                <option
-                                    value={id}
-                                    selected={available_times.find(
-                                        item => item.id === id
-                                    )}
-                                >
-                                    {WeekDay[day - 1]} {formatTime(start_time)}{' '}
-                                    ~ {formatTime(end_time)}
-                                </option>
-                            )
-                        )}
+                        {meta.availableTimes.map(section => (
+                            <option
+                                value={section.id}
+                                selected={available_times.find(
+                                    ({ id }) => id === section.id
+                                )}
+                            >
+                                {timeSection(section)}
+                            </option>
+                        ))}
                     </FormField>
 
                     <FormField
                         name="fav_topic"
                         required
                         label="Favorite topic"
-                        defaultValue={user.fav_topic}
+                        defaultValue={fav_topic}
                     />
                 </fieldset>
                 <fieldset disabled={loading}>
@@ -160,19 +164,19 @@ export class CoachProfileEdit extends mixin<{}, EditState>() {
                         name="phone_num"
                         required
                         label="Telephone"
-                        defaultValue={user.phone_num}
+                        defaultValue={phone_num}
                     />
                     <FormField
                         type="email"
                         name="email"
                         required
                         label="Email"
-                        defaultValue={user.email}
+                        defaultValue={email}
                     />
                     <FormField
                         type="password"
                         name="password"
-                        required={!user.id}
+                        required={!id}
                         label="Password"
                     />
                 </fieldset>
