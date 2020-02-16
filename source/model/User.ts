@@ -31,7 +31,7 @@ export enum UserRole {
 
 export class Session {
     @observable
-    user: User = localStorage.account ? JSON.parse(localStorage.account) : null;
+    user: User = localStorage.account ? JSON.parse(localStorage.account) : {};
 
     constructor() {
         if (localStorage.token) this.getCurrentUser();

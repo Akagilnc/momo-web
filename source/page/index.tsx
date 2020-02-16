@@ -1,10 +1,9 @@
 // @ts-ignore
 import { auto } from 'browser-unhandled-rejection';
-
-import { createCell, render } from 'web-cell';
+import { documentReady, render, createCell } from 'web-cell';
 
 import { session } from '../model';
-
+import { loaded } from '../i18n';
 import PageRouter from './PageRouter';
 
 auto();
@@ -17,4 +16,4 @@ window.addEventListener(
     }
 );
 
-render(<PageRouter />);
+Promise.all([loaded, documentReady]).then(() => render(<PageRouter />));

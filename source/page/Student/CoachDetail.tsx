@@ -1,17 +1,18 @@
 import { component, mixin, watch, createCell } from 'web-cell';
+import { Card } from 'boot-cell/source/Content/Card';
 import { Button } from 'boot-cell/source/Form/Button';
 
+import { CoachProfile } from '../../component/CoachProfile';
 import {
     Coach,
     Country,
-    GenderSymbol,
     getCoach,
     bookCourse,
     session,
     history
 } from '../../model';
 import { timeSection } from '../../utility';
-import style from '../Coach/Profile.less';
+import { i18nTextOf } from '../../i18n';
 
 @component({
     tagName: 'coach-detail',
@@ -49,71 +50,30 @@ export class CoachDetail extends mixin<{ coachId: number }, Coach>() {
         history.push('student/profile');
     }
 
-    render(
-        _,
-        {
-            avatar,
-            first_name,
-            last_name,
-            age,
-            sex,
-            country,
-            phone_num,
-            email,
-            fav_topic,
-            introduction,
-            available_times
-        }: Coach
-    ) {
+    render(_, coach: Coach) {
         return (
             <div className="p-3">
-                <ul className={`list-group ${style.container}`}>
-                    <li className="list-group-item">
-                        <img className={style.avatar} src={avatar} />
-                        {first_name}·{last_name}
-                    </li>
-                    <li className="list-group-item">
-                        年龄<span>{age}</span>
-                    </li>
-                    <li className="list-group-item">
-                        性别<span>{GenderSymbol[sex]}</span>
-                    </li>
-                    <li className="list-group-item">
-                        国籍<span>{country.name}</span>
-                    </li>
-                    <li className="list-group-item">
-                        电话<span>{phone_num}</span>
-                    </li>
-                    <li className="list-group-item">
-                        电邮<span>{email}</span>
-                    </li>
-                    <li className="list-group-item">
-                        感兴趣的话题<span>{fav_topic}</span>
-                    </li>
-                    <li className="list-group-item">
-                        简介<p>{introduction}</p>
-                    </li>
-                    <li className="list-group-item">
-                        选择时段
-                        <div className="d-flex flex-column">
-                            {available_times.map(section => {
-                                const title = timeSection(section);
+                <CoachProfile {...coach} />
 
-                                return (
-                                    <Button
-                                        key={section.id}
-                                        className="my-1"
-                                        onClick={() =>
-                                            this.bookLesson(section.id, title)
-                                        }
-                                    >
-                                        {title}
-                                    </Button>
-                                );
-                            })}
-                        </div>
-                    </li>
-                </ul>
+                <Card title={i18nTextOf('available_times')}>
+                    <div className="d-flex flex-column">
+                        {coach.available_times.map(section => {
+                            const title = timeSection(section);
+
+                            return (
+                                <Button
+                                    key={section.id}
+                                    className="my-1"
+                                    onClick={() =>
+                                        this.bookLesson(section.id, title)
+                                    }
+                                >
+                                    {title}
+                                </Button>
+                            );
+                        })}
+                    </div>
+                </Card>
             </div>
         );
     }

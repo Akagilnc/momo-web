@@ -12,7 +12,7 @@ import {
     history
 } from '../../model';
 import { timeSection } from '../../utility';
-import style from '../Coach/Profile.less';
+import style from '../../component/CoachProfile.less';
 
 interface CoachListState {
     list: Coach[];

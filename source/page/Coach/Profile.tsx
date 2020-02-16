@@ -1,69 +1,39 @@
 import { createCell, component, mixin } from 'web-cell';
 import { observer } from 'mobx-web-cell';
+import { AlertBox } from 'boot-cell/source/Prompt/Alert';
+import { Card } from 'boot-cell/source/Content/Card';
 import { Button } from 'boot-cell/source/Form/Button';
 
-import { session, Coach, GenderSymbol } from '../../model';
+import { CoachProfile } from '../../component/CoachProfile';
+import { session, Coach } from '../../model';
 import { timeSection } from '../../utility';
-import style from './Profile.less';
+import { i18nTextOf } from '../../i18n';
 
 @observer
 @component({
     tagName: 'coach-profile',
     renderTarget: 'children'
 })
-export class CoachProfile extends mixin() {
+export class CoachProfilePage extends mixin() {
     render() {
-        const {
-            avatar,
-            first_name,
-            last_name,
-            age,
-            sex,
-            country,
-            phone_num,
-            email,
-            fav_topic,
-            introduction,
-            available_times
-        } = session.user as Coach;
+        const coach = session.user as Coach;
 
         return (
             <main className="p-3">
-                <ul className={`list-group ${style.container}`}>
-                    <li className="list-group-item">
-                        <img className={style.avatar} src={avatar} />
-                        {first_name}·{last_name}
-                    </li>
-                    <li className="list-group-item">
-                        Age<span>{age}</span>
-                    </li>
-                    <li className="list-group-item">
-                        Gender<span>{GenderSymbol[sex]}</span>
-                    </li>
-                    <li className="list-group-item">
-                        Country<span>{country?.name}</span>
-                    </li>
-                    <li className="list-group-item">
-                        Phone<span>{phone_num}</span>
-                    </li>
-                    <li className="list-group-item">
-                        Email<span>{email}</span>
-                    </li>
-                    <li className="list-group-item">
-                        Favorite topic<span>{fav_topic}</span>
-                    </li>
-                    <li className="list-group-item">
-                        Introduction<p>{introduction}</p>
-                    </li>
-                    <li className="list-group-item">
-                        Available Times
-                        <ul>
-                            {available_times?.map(section => (
-                                <li>{timeSection(section)}</li>
-                            ))}
-                        </ul>
-                    </li>
-                </ul>
+                {coach.status !== false ? null : (
+                    <AlertBox type="danger">
+                        Your profile need to be edited to pass verification
+                    </AlertBox>
+                )}
+                <CoachProfile {...coach} />
+
+                <Card title={i18nTextOf('available_times')}>
+                    <ul>
+                        {coach?.available_times?.map(section => (
+                            <li>{timeSection(section)}</li>
+                        ))}
+                    </ul>
+                </Card>
                 <Button block className="mt-3" href="coach/profile/edit">
                     Edit
                 </Button>

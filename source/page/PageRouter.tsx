@@ -7,14 +7,14 @@ import { DropMenu } from 'boot-cell/source/Navigator/DropMenu';
 import { history, UserRole, session } from '../model';
 
 import PageLogin from './PageLogin';
-import { CoachProfile, CoachProfileEdit, LessonList } from './Coach';
+import { CoachProfilePage, CoachProfileEdit, LessonList } from './Coach';
 import {
     StudentProfile,
     StudentProfileEdit,
     CoachList,
     CoachDetail
 } from './Student';
-import { CoachTable, StudentTable, MetaData } from './Admin';
+import { CoachTable, AdminCoachProfile, StudentTable, MetaData } from './Admin';
 
 @observer
 @component({
@@ -34,7 +34,7 @@ export default class PageRouter extends HTMLRouter {
         },
         {
             paths: ['coach/profile', 'coach'],
-            component: CoachProfile
+            component: CoachProfilePage
         },
         {
             paths: ['student/profile/edit'],
@@ -57,6 +57,10 @@ export default class PageRouter extends HTMLRouter {
         {
             paths: ['admin/coaches', 'admin'],
             component: CoachTable
+        },
+        {
+            paths: ['admin/coach'],
+            component: AdminCoachProfile
         }
     ];
     protected menu = [

@@ -40,8 +40,7 @@
     },
     "lint-staged": {
         "*.{html,md,less,js,ts,tsx,json,yml}": [
-            "prettier --write",
-            "git add"
+            "prettier --write"
         ]
     },
     "husky": {

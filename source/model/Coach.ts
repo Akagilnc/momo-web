@@ -55,3 +55,7 @@ export async function getCoaches(filter: CoachFilter = {}) {
 export function verifyCoach(id: number) {
     return client.post(`/users/coaches/${id}/change_activity/`);
 }
+
+export function rejectCoach(id: number) {
+    return client.post(`/users/coaches/${id}/reject/`);
+}
