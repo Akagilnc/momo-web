@@ -1,4 +1,4 @@
-import { createCell, component, mixin, on } from 'web-cell';
+import { component, mixin, on, createCell, Fragment } from 'web-cell';
 import { FormField } from 'boot-cell/source/Form/FormField';
 import { MediaItem } from 'boot-cell/source/Content/MediaItem';
 
@@ -9,7 +9,7 @@ import {
     meta,
     Gender,
     GenderSymbol,
-    history
+    session
 } from '../../model';
 import { timeSection } from '../../utility';
 import style from '../../component/CoachProfile.less';
@@ -42,9 +42,43 @@ export class CoachList extends mixin<{}, CoachListState>() {
         this.changeFilter({ [name]: value });
     }
 
+    renderItem = ({
+        id,
+        first_name,
+        last_name,
+        avatar,
+        age,
+        sex,
+        country,
+        fav_topic
+    }: Coach) => (
+        <MediaItem
+            key={id}
+            className="border p-3 mb-3"
+            title={`${first_name}·${last_name}`}
+            image={<img className={`${style.avatar} mr-3`} src={avatar} />}
+            onClick={() => session.push('student/coach?coachId=' + id)}
+        >
+            <ul className={`list-unstyled ${style.container}`}>
+                <li>
+                    年龄<span>{age}</span>
+                </li>
+                <li>
+                    性别<span>{GenderSymbol[sex]}</span>
+                </li>
+                <li>
+                    国籍<span>{country.name}</span>
+                </li>
+                <li>
+                    擅长话题<span>{fav_topic}</span>
+                </li>
+            </ul>
+        </MediaItem>
+    );
+
     render(_, { list }: CoachListState) {
         return (
-            <div className="p-3">
+            <Fragment>
                 <h2>教练</h2>
 
                 <details className="my-3">
@@ -81,49 +115,8 @@ export class CoachList extends mixin<{}, CoachListState>() {
                     </form>
                 </details>
 
-                {list.map(
-                    ({
-                        id,
-                        first_name,
-                        last_name,
-                        avatar,
-                        age,
-                        sex,
-                        country,
-                        fav_topic
-                    }) => (
-                        <MediaItem
-                            key={id}
-                            className="border p-3 mb-3"
-                            title={`${first_name}·${last_name}`}
-                            image={
-                                <img
-                                    className={`${style.avatar} mr-3`}
-                                    src={avatar}
-                                />
-                            }
-                            onClick={() =>
-                                history.push('student/coach?coachId=' + id)
-                            }
-                        >
-                            <ul className={`list-unstyled ${style.container}`}>
-                                <li>
-                                    年龄<span>{age}</span>
-                                </li>
-                                <li>
-                                    性别<span>{GenderSymbol[sex]}</span>
-                                </li>
-                                <li>
-                                    国籍<span>{country.name}</span>
-                                </li>
-                                <li>
-                                    擅长话题<span>{fav_topic}</span>
-                                </li>
-                            </ul>
-                        </MediaItem>
-                    )
-                )}
-            </div>
+                {list.map(this.renderItem)}
+            </Fragment>
         );
     }
 }

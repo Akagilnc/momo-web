@@ -1,4 +1,11 @@
-import { createCell, component, mixin, watch, attribute } from 'web-cell';
+import {
+    component,
+    mixin,
+    watch,
+    attribute,
+    createCell,
+    Fragment
+} from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { Card } from 'boot-cell/source/Content/Card';
 import { Button } from 'boot-cell/source/Form/Button';
@@ -9,7 +16,7 @@ import {
     Country,
     getCoach,
     verifyCoach,
-    history,
+    session,
     rejectCoach
 } from '../../model';
 import { timeSection } from '../../utility';
@@ -48,18 +55,18 @@ export class AdminCoachProfile extends mixin<{ cid: number }, Coach>() {
     verify = async () => {
         await verifyCoach(this.cid);
 
-        history.push('admin/coaches');
+        session.push('admin/coaches');
     };
 
     reject = async () => {
         await rejectCoach(this.cid);
 
-        history.push('admin/coaches');
+        session.push('admin/coaches');
     };
 
     render(_, coach: Coach) {
         return (
-            <main className="p-3">
+            <Fragment>
                 <CoachProfile {...coach} />
 
                 <Card title={i18nTextOf('available_times')}>
@@ -78,7 +85,7 @@ export class AdminCoachProfile extends mixin<{ cid: number }, Coach>() {
                         拒绝
                     </Button>
                 </div>
-            </main>
+            </Fragment>
         );
     }
 }

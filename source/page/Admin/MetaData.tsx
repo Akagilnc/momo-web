@@ -1,10 +1,10 @@
-import { createCell, component, mixin } from 'web-cell';
+import { createCell, component, mixin, Fragment } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { Table } from 'boot-cell/source/Content/Table';
 import { FormField } from 'boot-cell/source/Form/FormField';
 
 import { WeekDay, formatTime } from '../../utility';
-import { meta } from '../../model';
+import { meta, AvailableTime } from '../../model';
 
 interface MetaState {
     timeLoading: boolean;
@@ -44,9 +44,33 @@ export class MetaData extends mixin<{}, MetaState>() {
         }
     }
 
+    renderItem = ({
+        id,
+        day,
+        start_time,
+        end_time,
+        max_kids
+    }: AvailableTime) => (
+        <tr>
+            <td>{WeekDay[day - 1]}</td>
+            <td>{formatTime(start_time)}</td>
+            <td>{formatTime(end_time)}</td>
+            <td>{max_kids}</td>
+            <td>
+                <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={this.onDelete.bind(this, id)}
+                >
+                    Delete
+                </button>
+            </td>
+        </tr>
+    );
+
     render(_, { timeLoading }: MetaState) {
         return (
-            <main className="p-3">
+            <Fragment>
                 <h2>Meta data</h2>
 
                 <form onSubmit={this.onAdd}>
@@ -64,34 +88,7 @@ export class MetaData extends mixin<{}, MetaState>() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {meta.availableTimes.map(
-                                    ({
-                                        id,
-                                        day,
-                                        start_time,
-                                        end_time,
-                                        max_kids
-                                    }) => (
-                                        <tr>
-                                            <td>{WeekDay[day - 1]}</td>
-                                            <td>{formatTime(start_time)}</td>
-                                            <td>{formatTime(end_time)}</td>
-                                            <td>{max_kids}</td>
-                                            <td>
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-danger"
-                                                    onClick={this.onDelete.bind(
-                                                        this,
-                                                        id
-                                                    )}
-                                                >
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
-                                )}
+                                {meta.availableTimes.map(this.renderItem)}
                             </tbody>
                         </Table>
 
@@ -122,7 +119,7 @@ export class MetaData extends mixin<{}, MetaState>() {
                         <input type="submit" className="btn btn-primary" />
                     </fieldset>
                 </form>
-            </main>
+            </Fragment>
         );
     }
 }

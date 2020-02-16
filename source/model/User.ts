@@ -1,4 +1,5 @@
 import { observable } from 'mobx';
+import { History } from 'cell-router/source';
 
 import { client } from './service';
 
@@ -14,6 +15,12 @@ export enum GenderSymbol {
     '?'
 }
 
+export enum UserRole {
+    Admin = 'Admin',
+    Coach = 'Coach',
+    Kid = 'Kid'
+}
+
 export interface User {
     id?: number;
     username?: string;
@@ -23,19 +30,9 @@ export interface User {
     group?: UserRole;
 }
 
-export enum UserRole {
-    Admin = 'Admin',
-    Coach = 'Coach',
-    Kid = 'Kid'
-}
-
-export class Session {
+export class Session extends History {
     @observable
     user: User = localStorage.account ? JSON.parse(localStorage.account) : {};
-
-    constructor() {
-        if (localStorage.token) this.getCurrentUser();
-    }
 
     async getCurrentUser() {
         const { body } = await client.get<User>('/users/get-current-user/');
@@ -54,13 +51,31 @@ export class Session {
 
         localStorage.token = key;
 
-        return this.getCurrentUser();
+        const { group } = await this.getCurrentUser();
+
+        this.push(group.toLowerCase(), group);
     }
 
     destroy() {
         delete localStorage.token;
 
         location.replace('/');
+    }
+
+    async init() {
+        if (localStorage.token)
+            try {
+                await this.getCurrentUser();
+            } catch {
+                return this.destroy();
+            }
+        else return this.push('login');
+
+        if (this.path) return;
+
+        const { group } = this.user;
+
+        this.push(group.toLowerCase(), group);
     }
 
     hasRole(...names: UserRole[]) {

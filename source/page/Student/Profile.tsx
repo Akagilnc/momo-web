@@ -1,8 +1,8 @@
-import { createCell, component, mixin } from 'web-cell';
+import { component, mixin, createCell, Fragment } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { Button } from 'boot-cell/source/Form/Button';
 
-import style from './Profile.less';
+import style from '../../component/CoachProfile.less';
 import {
     Course,
     session,
@@ -54,8 +54,8 @@ export class StudentProfile extends mixin() {
         } = session.user as Student;
 
         return (
-            <main className="p-3">
-                <ul className={`list-group p-3 ${style.container}`}>
+            <Fragment>
+                <ul className={`list-group ${style.container}`}>
                     <li className="list-group-item">{full_name}</li>
                     <li className="list-group-item">
                         年龄<span>{age}</span>
@@ -83,7 +83,7 @@ export class StudentProfile extends mixin() {
                 >
                     编辑
                 </a>
-            </main>
+            </Fragment>
         );
     }
 }

@@ -1,10 +1,10 @@
-import { createCell, component } from 'web-cell';
+import { component, createCell, Fragment } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { HTMLRouter } from 'cell-router/source';
 import { NavBar } from 'boot-cell/source/Navigator/NavBar';
 import { DropMenu } from 'boot-cell/source/Navigator/DropMenu';
 
-import { history, UserRole, session } from '../model';
+import { session, UserRole } from '../model';
 
 import PageLogin from './PageLogin';
 import { CoachProfilePage, CoachProfileEdit, LessonList } from './Coach';
@@ -22,8 +22,12 @@ import { CoachTable, AdminCoachProfile, StudentTable, MetaData } from './Admin';
     renderTarget: 'children'
 })
 export default class PageRouter extends HTMLRouter {
-    protected history = history;
+    protected history = session;
     protected routes = [
+        {
+            paths: ['login'],
+            component: PageLogin
+        },
         {
             paths: ['coach/lessons'],
             component: LessonList
@@ -101,18 +105,26 @@ export default class PageRouter extends HTMLRouter {
         }
     ];
 
+    connectedCallback() {
+        super.connectedCallback();
+
+        session.init();
+    }
+
     render() {
-        const { user } = session;
+        const {
+            user: { group, username, phone_num }
+        } = session;
 
         return (
-            <div className="pt-5">
+            <Fragment>
                 <NavBar
                     brand="Momo Chat"
                     menu={this.menu.filter(item => session.hasRole(item.group))}
                 >
-                    {user && (
+                    {group && (
                         <DropMenu
-                            title={user.username || user.phone_num}
+                            title={username || phone_num}
                             alignType="right"
                             alignSize="md"
                             list={[
@@ -124,8 +136,8 @@ export default class PageRouter extends HTMLRouter {
                         />
                     )}
                 </NavBar>
-                {super.render() || <PageLogin />}
-            </div>
+                <main className="container mt-5 py-3">{super.render()}</main>
+            </Fragment>
         );
     }
 }

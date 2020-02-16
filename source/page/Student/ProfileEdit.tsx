@@ -1,7 +1,7 @@
 import { createCell, component, mixin, watch } from 'web-cell';
 import { FormField } from 'boot-cell/source/Form/FormField';
 
-import { updateStudent, history, session, Student } from '../../model';
+import { updateStudent, session, Student } from '../../model';
 
 @component({
     tagName: 'student-profile-edit',
@@ -20,8 +20,8 @@ export class StudentProfileEdit extends mixin() {
         try {
             session.setCurrentUser(await updateStudent(data));
 
-            if (!data.get('id')) history.push('login', 'Log in');
-            else history.push('student', 'Student Profile');
+            if (!data.get('id')) session.push('login', 'Log in');
+            else session.push('student', 'Student Profile');
         } finally {
             this.loading = false;
         }
@@ -33,7 +33,7 @@ export class StudentProfileEdit extends mixin() {
 
         return (
             <form
-                className="form p-3"
+                className="form"
                 onReset={() => window.history.back()}
                 onSubmit={this.onSubmit}
             >

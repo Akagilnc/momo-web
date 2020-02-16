@@ -6,6 +6,7 @@ export interface Student extends User {
     full_name: string;
     wechat_id: string;
     courses: Course[];
+    status: boolean;
 }
 
 export async function updateStudent(data: FormData) {
@@ -33,4 +34,8 @@ export async function getStudents({ page = 1 } = {}) {
     );
 
     return body;
+}
+
+export function toggleStudent(id: number) {
+    return client.post(`/users/kids/${id}/change_activity/`);
 }

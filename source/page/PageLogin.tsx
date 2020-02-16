@@ -1,7 +1,7 @@
 import { createCell, component, mixin, watch } from 'web-cell';
 import { FormField } from 'boot-cell/source/Form/FormField';
 
-import { session, history } from '../model';
+import { session } from '../model';
 
 @component({
     tagName: 'page-login',
@@ -16,11 +16,7 @@ export default class PageLogin extends mixin() {
 
         this.loading = true;
         try {
-            const { group } = await session.boot(
-                new FormData(event.target as HTMLFormElement)
-            );
-
-            history.push(group.toLowerCase(), group);
+            await session.boot(new FormData(event.target as HTMLFormElement));
         } finally {
             this.loading = false;
         }

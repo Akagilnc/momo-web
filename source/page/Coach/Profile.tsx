@@ -1,4 +1,4 @@
-import { createCell, component, mixin } from 'web-cell';
+import { component, mixin, createCell, Fragment } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { AlertBox } from 'boot-cell/source/Prompt/Alert';
 import { Card } from 'boot-cell/source/Content/Card';
@@ -19,7 +19,7 @@ export class CoachProfilePage extends mixin() {
         const coach = session.user as Coach;
 
         return (
-            <main className="p-3">
+            <Fragment>
                 {coach.status !== false ? null : (
                     <AlertBox type="danger">
                         Your profile need to be edited to pass verification
@@ -37,7 +37,7 @@ export class CoachProfilePage extends mixin() {
                 <Button block className="mt-3" href="coach/profile/edit">
                     Edit
                 </Button>
-            </main>
+            </Fragment>
         );
     }
 }

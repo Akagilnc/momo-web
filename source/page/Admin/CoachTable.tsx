@@ -1,4 +1,4 @@
-import { createCell, component, mixin, watch } from 'web-cell';
+import { createCell, component, mixin, watch, Fragment } from 'web-cell';
 import { Table } from 'boot-cell/source/Content/Table';
 import { Pagination } from 'boot-cell/source/Navigator/Pagination';
 import { Badge } from 'boot-cell/source/Reminder/Badge';
@@ -89,7 +89,7 @@ export class CoachTable extends mixin<CoachTableProps>() {
 
     render({ coaches, current, total }: CoachTableProps) {
         return (
-            <main className="p-3">
+            <Fragment>
                 <h2>Coach</h2>
 
                 <Table center striped hover>
@@ -114,7 +114,7 @@ export class CoachTable extends mixin<CoachTableProps>() {
                     total={total}
                     onChange={({ detail }) => this.getPage(detail)}
                 />
-            </main>
+            </Fragment>
         );
     }
 }

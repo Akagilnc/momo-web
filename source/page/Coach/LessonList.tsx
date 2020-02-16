@@ -1,4 +1,4 @@
-import { component, mixin, createCell } from 'web-cell';
+import { component, mixin, createCell, Fragment } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { Card } from 'boot-cell/source/Content/Card';
 
@@ -12,7 +12,7 @@ import { session, Coach, GenderSymbol } from '../../model';
 export class LessonList extends mixin() {
     render() {
         return (
-            <div className="p-3">
+            <Fragment>
                 <h2>Lessons</h2>
 
                 {(session.user as Coach).courses?.map(
@@ -32,7 +32,7 @@ export class LessonList extends mixin() {
                         </Card>
                     )
                 )}
-            </div>
+            </Fragment>
         );
     }
 }

@@ -1,16 +1,9 @@
-import { component, mixin, watch, createCell } from 'web-cell';
+import { component, mixin, watch, createCell, Fragment } from 'web-cell';
 import { Card } from 'boot-cell/source/Content/Card';
 import { Button } from 'boot-cell/source/Form/Button';
 
 import { CoachProfile } from '../../component/CoachProfile';
-import {
-    Coach,
-    Country,
-    getCoach,
-    bookCourse,
-    session,
-    history
-} from '../../model';
+import { Coach, Country, getCoach, bookCourse, session } from '../../model';
 import { timeSection } from '../../utility';
 import { i18nTextOf } from '../../i18n';
 
@@ -47,12 +40,12 @@ export class CoachDetail extends mixin<{ coachId: number }, Coach>() {
 
         await session.getCurrentUser();
 
-        history.push('student/profile');
+        session.push('student/profile');
     }
 
     render(_, coach: Coach) {
         return (
-            <div className="p-3">
+            <Fragment>
                 <CoachProfile {...coach} />
 
                 <Card title={i18nTextOf('available_times')}>
@@ -74,7 +67,7 @@ export class CoachDetail extends mixin<{ coachId: number }, Coach>() {
                         })}
                     </div>
                 </Card>
-            </div>
+            </Fragment>
         );
     }
 }
