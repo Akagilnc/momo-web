@@ -37,7 +37,7 @@ client.use(async ({ request: { method, path, headers }, response }, next) => {
         });
     }
 
-    if (method === 'POST' && path.startsWith('/rest-auth/login/'))
+    if (method === 'POST' && (path + '').startsWith('/rest-auth/login/'))
         localStorage.token = token = response.body.key;
 });
 

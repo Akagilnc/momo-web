@@ -1,6 +1,7 @@
 import { createCell, component, mixin } from 'web-cell';
 import { observer } from 'mobx-web-cell';
-import { Table, FormField } from 'boot-cell/source';
+import { Table } from 'boot-cell/source/Content/Table';
+import { FormField } from 'boot-cell/source/Form/FormField';
 
 import { WeekDay, formatTime } from '../../utility';
 import { meta } from '../../model';

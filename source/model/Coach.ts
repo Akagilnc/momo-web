@@ -14,6 +14,7 @@ export interface Coach extends User {
     introduction: string;
     available_times: AvailableTime[];
     courses?: Course[];
+    status?: boolean;
 }
 
 export async function updateCoach(data: FormData) {
@@ -49,4 +50,8 @@ export async function getCoaches(filter: CoachFilter = {}) {
     );
 
     return body;
+}
+
+export function verifyCoach(id: number) {
+    return client.post(`/users/coaches/${id}/change_activity/`);
 }

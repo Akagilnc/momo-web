@@ -1,7 +1,8 @@
 import { createCell, component } from 'web-cell';
 import { observer } from 'mobx-web-cell';
-import { HTMLRouter, matchRoutes } from 'cell-router/source';
+import { HTMLRouter } from 'cell-router/source';
 import { NavBar } from 'boot-cell/source/Navigator/NavBar';
+import { DropMenu } from 'boot-cell/source/Navigator/DropMenu';
 
 import { history, UserRole, session } from '../model';
 
@@ -22,7 +23,42 @@ import { CoachTable, StudentTable, MetaData } from './Admin';
 })
 export default class PageRouter extends HTMLRouter {
     protected history = history;
-
+    protected routes = [
+        {
+            paths: ['coach/lessons'],
+            component: LessonList
+        },
+        {
+            paths: ['coach/profile/edit'],
+            component: CoachProfileEdit
+        },
+        {
+            paths: ['coach/profile', 'coach'],
+            component: CoachProfile
+        },
+        {
+            paths: ['student/profile/edit'],
+            component: StudentProfileEdit
+        },
+        {
+            paths: ['student/profile'],
+            component: StudentProfile
+        },
+        {
+            paths: ['student/coach'],
+            component: CoachDetail
+        },
+        {
+            paths: ['student/coaches', 'student', 'kid'],
+            component: CoachList
+        },
+        { paths: ['admin/meta'], component: MetaData },
+        { paths: ['admin/students'], component: StudentTable },
+        {
+            paths: ['admin/coaches', 'admin'],
+            component: CoachTable
+        }
+    ];
     protected menu = [
         {
             title: 'Profile',
@@ -62,51 +98,29 @@ export default class PageRouter extends HTMLRouter {
     ];
 
     render() {
+        const { user } = session;
+
         return (
             <div className="pt-5">
                 <NavBar
-                    title="Momo Chat"
+                    brand="Momo Chat"
                     menu={this.menu.filter(item => session.hasRole(item.group))}
-                />
-                {matchRoutes(
-                    [
-                        {
-                            paths: ['coach/lessons'],
-                            component: LessonList
-                        },
-                        {
-                            paths: ['coach/profile/edit'],
-                            component: CoachProfileEdit
-                        },
-                        {
-                            paths: ['coach/profile', 'coach'],
-                            component: CoachProfile
-                        },
-                        {
-                            paths: ['student/profile/edit'],
-                            component: StudentProfileEdit
-                        },
-                        {
-                            paths: ['student/profile'],
-                            component: StudentProfile
-                        },
-                        {
-                            paths: ['student/coach'],
-                            component: CoachDetail
-                        },
-                        {
-                            paths: ['student/coaches', 'student', 'kid'],
-                            component: CoachList
-                        },
-                        { paths: ['admin/meta'], component: MetaData },
-                        { paths: ['admin/students'], component: StudentTable },
-                        {
-                            paths: ['admin/coaches', 'admin'],
-                            component: CoachTable
-                        }
-                    ],
-                    history.path
-                ) || <PageLogin />}
+                >
+                    {user && (
+                        <DropMenu
+                            title={user.username || user.phone_num}
+                            alignType="right"
+                            alignSize="md"
+                            list={[
+                                {
+                                    title: 'Sign out',
+                                    onClick: () => session.destroy()
+                                }
+                            ]}
+                        />
+                    )}
+                </NavBar>
+                {super.render() || <PageLogin />}
             </div>
         );
     }

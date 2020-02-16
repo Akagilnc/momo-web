@@ -1,9 +1,11 @@
 import { User } from './User';
+import { Course } from './Course';
 import { client, PageData } from './service';
 
 export interface Student extends User {
     full_name: string;
     wechat_id: string;
+    courses: Course[];
 }
 
 export async function updateStudent(data: FormData) {

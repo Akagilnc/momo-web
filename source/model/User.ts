@@ -16,6 +16,7 @@ export enum GenderSymbol {
 
 export interface User {
     id?: number;
+    username?: string;
     age: number;
     sex: Gender;
     phone_num: string;
@@ -30,7 +31,7 @@ export enum UserRole {
 
 export class Session {
     @observable
-    user: User = localStorage.account ? JSON.parse(localStorage.account) : {};
+    user: User = localStorage.account ? JSON.parse(localStorage.account) : null;
 
     constructor() {
         if (localStorage.token) this.getCurrentUser();

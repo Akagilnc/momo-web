@@ -6,7 +6,9 @@ import {
     Country,
     GenderSymbol,
     getCoach,
-    bookCourse
+    bookCourse,
+    session,
+    history
 } from '../../model';
 import { timeSection } from '../../utility';
 import style from '../Coach/Profile.less';
@@ -42,7 +44,9 @@ export class CoachDetail extends mixin<{ coachId: number }, Coach>() {
 
         await bookCourse(this.coachId, id);
 
-        self.alert('预约成功！');
+        await session.getCurrentUser();
+
+        history.push('student/profile');
     }
 
     render(

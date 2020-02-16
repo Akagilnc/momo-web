@@ -1,5 +1,6 @@
 import { createCell, component, mixin, watch } from 'web-cell';
-import { Table, Pagination } from 'boot-cell/source';
+import { Table } from 'boot-cell/source/Content/Table';
+import { Pagination } from 'boot-cell/source/Navigator/Pagination';
 
 import { Student, getStudents, GenderSymbol } from '../../model';
 

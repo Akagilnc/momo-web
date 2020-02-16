@@ -22,7 +22,7 @@ npm start
 
 [1]: https://travis-ci.com/Akagilnc/momo-web
 [2]: https://typescriptlang.org
-[3]: https://github.com/EasyWebApp/WebCell/tree/v2
+[3]: https://web-cell.dev/
 [4]: https://getbootstrap.com
 [5]: https://fontawesome.com
 [6]: https://mobx.js.org

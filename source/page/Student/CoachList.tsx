@@ -1,5 +1,6 @@
 import { createCell, component, mixin, on } from 'web-cell';
-import { FormField, MediaItem } from 'boot-cell/source';
+import { FormField } from 'boot-cell/source/Form/FormField';
+import { MediaItem } from 'boot-cell/source/Content/MediaItem';
 
 import {
     Coach,

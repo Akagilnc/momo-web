@@ -1,8 +1,15 @@
 import { createCell, component, mixin } from 'web-cell';
 import { observer } from 'mobx-web-cell';
+import { Button } from 'boot-cell/source/Form/Button';
 
 import style from './Profile.less';
-import { session, Student, GenderSymbol } from '../../model';
+import {
+    Course,
+    session,
+    Student,
+    GenderSymbol,
+    cancelCourse
+} from '../../model';
 
 @observer
 @component({
@@ -10,8 +17,41 @@ import { session, Student, GenderSymbol } from '../../model';
     renderTarget: 'children'
 })
 export class StudentProfile extends mixin() {
+    async cancelCourse(id: number) {
+        await cancelCourse(id);
+
+        await session.getCurrentUser();
+    }
+
+    renderCourse = ({ coach, start_time, end_time, id }: Course) => (
+        <li>
+            <ul className="list-unstyled">
+                <li>陪练：{coach}</li>
+                <li>
+                    时间：{new Date(start_time).toLocaleString()} ~{' '}
+                    {new Date(end_time).toLocaleString()}
+                </li>
+                <li>
+                    <Button
+                        kind="danger"
+                        size="sm"
+                        onClick={() => this.cancelCourse(id)}
+                    >
+                        退订
+                    </Button>
+                </li>
+            </ul>
+        </li>
+    );
+
     render() {
-        const { full_name, age, sex, phone_num } = session.user as Student;
+        const {
+            full_name,
+            age,
+            sex,
+            phone_num,
+            courses
+        } = session.user as Student;
 
         return (
             <main className="p-3">
@@ -25,6 +65,16 @@ export class StudentProfile extends mixin() {
                     </li>
                     <li className="list-group-item">
                         电话<span>{phone_num}</span>
+                    </li>
+                    <li className="list-group-item">
+                        预订课程
+                        {!courses[0] ? (
+                            <Button size="sm" href="student/coaches">
+                                预订
+                            </Button>
+                        ) : (
+                            <ol>{courses.map(this.renderCourse)}</ol>
+                        )}
                     </li>
                 </ul>
                 <a

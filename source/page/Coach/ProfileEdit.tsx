@@ -1,6 +1,7 @@
 import { createCell, component, mixin } from 'web-cell';
 import { observer } from 'mobx-web-cell';
-import { FormField, FileInput } from 'boot-cell/source/Form';
+import { FormField } from 'boot-cell/source/Form/FormField';
+import { FileInput } from 'boot-cell/source/Form/FileInput';
 
 import {
     updateCoach,

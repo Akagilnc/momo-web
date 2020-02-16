@@ -4,6 +4,7 @@
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "jsx": "react",
-        "jsxFactory": "createCell"
+        "jsxFactory": "createCell",
+        "lib": ["ES2019", "DOM"]
     }
 }

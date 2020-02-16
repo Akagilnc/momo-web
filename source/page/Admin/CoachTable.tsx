@@ -1,7 +1,9 @@
 import { createCell, component, mixin, watch } from 'web-cell';
-import { Table, Pagination } from 'boot-cell/source';
+import { Table } from 'boot-cell/source/Content/Table';
+import { Pagination } from 'boot-cell/source/Navigator/Pagination';
+import { ToggleField } from 'boot-cell/source/Form/ToggleField';
 
-import { Coach, getCoaches, GenderSymbol } from '../../model';
+import { Coach, getCoaches, GenderSymbol, verifyCoach } from '../../model';
 
 @component({
     tagName: 'coach-table',
@@ -31,6 +33,18 @@ export class CoachTable extends mixin() {
             (this.total = Math.ceil(count / 20));
     }
 
+    async verify(event: MouseEvent, id: number) {
+        event.preventDefault();
+
+        await verifyCoach(id);
+
+        const coach = this.coaches.find(({ id: ID }) => ID === id);
+
+        coach.status = true;
+
+        this.update();
+    }
+
     render() {
         const { current, total } = this;
 
@@ -49,6 +63,7 @@ export class CoachTable extends mixin() {
                             <th>Telephone</th>
                             <th>Email</th>
                             <th>Favorite topic</th>
+                            <th>Operation</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +77,9 @@ export class CoachTable extends mixin() {
                                 country,
                                 phone_num,
                                 email,
-                                fav_topic
+                                fav_topic,
+                                status,
+                                id
                             }) => (
                                 <tr>
                                     <td>
@@ -86,6 +103,18 @@ export class CoachTable extends mixin() {
                                         <a href={`mailto: ${email}`}>{email}</a>
                                     </td>
                                     <td>{fav_topic}</td>
+                                    <td>
+                                        <ToggleField
+                                            type="checkbox"
+                                            switch
+                                            checked={status}
+                                            onClick={event =>
+                                                this.verify(event, id)
+                                            }
+                                        >
+                                            Verified
+                                        </ToggleField>
+                                    </td>
                                 </tr>
                             )
                         )}
