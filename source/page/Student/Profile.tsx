@@ -1,5 +1,6 @@
 import { component, mixin, createCell, Fragment } from 'web-cell';
 import { observer } from 'mobx-web-cell';
+import { ListGroup, ListItem } from 'boot-cell/source/Content/ListGroup';
 import { Button } from 'boot-cell/source/Form/Button';
 
 import style from '../../component/CoachProfile.less';
@@ -33,7 +34,7 @@ export class StudentProfile extends mixin() {
                 </li>
                 <li>
                     <Button
-                        kind="danger"
+                        color="danger"
                         size="sm"
                         onClick={() => this.cancelCourse(id)}
                     >
@@ -54,19 +55,19 @@ export class StudentProfile extends mixin() {
         } = session.user as Student;
 
         return (
-            <Fragment>
-                <ul className={`list-group ${style.container}`}>
-                    <li className="list-group-item">{full_name}</li>
-                    <li className="list-group-item">
+            <>
+                <ListGroup className={style.container}>
+                    <ListItem>{full_name}</ListItem>
+                    <ListItem>
                         年龄<span>{age}</span>
-                    </li>
-                    <li className="list-group-item">
+                    </ListItem>
+                    <ListItem>
                         性别<span>{GenderSymbol[sex]}</span>
-                    </li>
-                    <li className="list-group-item">
+                    </ListItem>
+                    <ListItem>
                         电话<span>{phone_num}</span>
-                    </li>
-                    <li className="list-group-item">
+                    </ListItem>
+                    <ListItem>
                         预订课程
                         {!courses[0] ? (
                             <Button size="sm" href="student/coaches">
@@ -75,15 +76,13 @@ export class StudentProfile extends mixin() {
                         ) : (
                             <ol>{courses.map(this.renderCourse)}</ol>
                         )}
-                    </li>
-                </ul>
-                <a
-                    className="btn btn-block btn-primary mt-3"
-                    href="student/profile/edit"
-                >
+                    </ListItem>
+                </ListGroup>
+
+                <Button block className="mt-3" href="student/profile/edit">
                     编辑
-                </a>
-            </Fragment>
+                </Button>
+            </>
         );
     }
 }

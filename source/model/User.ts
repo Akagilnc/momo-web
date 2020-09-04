@@ -30,7 +30,9 @@ export interface User {
     group?: UserRole;
 }
 
-export class Session extends History {
+export const history = new History();
+
+export class Session {
     @observable
     user: User = localStorage.account ? JSON.parse(localStorage.account) : {};
 
@@ -53,7 +55,7 @@ export class Session extends History {
 
         const { group } = await this.getCurrentUser();
 
-        this.push(group.toLowerCase(), group);
+        history.push(group.toLowerCase(), group);
     }
 
     destroy() {
@@ -69,13 +71,13 @@ export class Session extends History {
             } catch {
                 return this.destroy();
             }
-        else return this.push('login');
+        else return history.push('login');
 
-        if (this.path) return;
+        if (history.path) return;
 
         const { group } = this.user;
 
-        this.push(group.toLowerCase(), group);
+        history.push(group.toLowerCase(), group);
     }
 
     hasRole(...names: UserRole[]) {

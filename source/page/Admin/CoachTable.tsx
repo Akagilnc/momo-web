@@ -1,7 +1,8 @@
 import { createCell, component, mixin, watch, Fragment } from 'web-cell';
+import { Image } from 'boot-cell/source/Media/Image';
+import { Badge } from 'boot-cell/source/Reminder/Badge';
 import { Table } from 'boot-cell/source/Content/Table';
 import { Pagination } from 'boot-cell/source/Navigator/Pagination';
-import { Badge } from 'boot-cell/source/Reminder/Badge';
 
 import { Coach, getCoaches, GenderSymbol } from '../../model';
 
@@ -54,7 +55,7 @@ export class CoachTable extends mixin<CoachTableProps>() {
     }: Coach) => (
         <tr>
             <td>
-                <img className="img-thumbnail" src={avatar} />
+                <Image thumbnail src={avatar} />
             </td>
             <td>
                 <a href={'admin/coach?cid=' + id}>
@@ -73,7 +74,7 @@ export class CoachTable extends mixin<CoachTableProps>() {
             <td>{fav_topic}</td>
             <td>
                 <Badge
-                    kind={
+                    color={
                         status != null
                             ? status
                                 ? 'success'
@@ -89,7 +90,7 @@ export class CoachTable extends mixin<CoachTableProps>() {
 
     render({ coaches, current, total }: CoachTableProps) {
         return (
-            <Fragment>
+            <>
                 <h2>Coach</h2>
 
                 <Table center striped hover>
@@ -114,7 +115,7 @@ export class CoachTable extends mixin<CoachTableProps>() {
                     total={total}
                     onChange={({ detail }) => this.getPage(detail)}
                 />
-            </Fragment>
+            </>
         );
     }
 }

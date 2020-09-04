@@ -1,5 +1,6 @@
 import { createCell, component, mixin, Fragment } from 'web-cell';
 import { observer } from 'mobx-web-cell';
+import { Button } from 'boot-cell/source/Form/Button';
 import { Table } from 'boot-cell/source/Content/Table';
 import { FormField } from 'boot-cell/source/Form/FormField';
 
@@ -57,20 +58,16 @@ export class MetaData extends mixin<{}, MetaState>() {
             <td>{formatTime(end_time)}</td>
             <td>{max_kids}</td>
             <td>
-                <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={this.onDelete.bind(this, id)}
-                >
+                <Button color="danger" onClick={this.onDelete.bind(this, id)}>
                     Delete
-                </button>
+                </Button>
             </td>
         </tr>
     );
 
     render(_, { timeLoading }: MetaState) {
         return (
-            <Fragment>
+            <>
                 <h2>Meta data</h2>
 
                 <form onSubmit={this.onAdd}>
@@ -119,7 +116,7 @@ export class MetaData extends mixin<{}, MetaState>() {
                         <input type="submit" className="btn btn-primary" />
                     </fieldset>
                 </form>
-            </Fragment>
+            </>
         );
     }
 }

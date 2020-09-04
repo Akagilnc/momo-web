@@ -74,7 +74,7 @@ export class StudentTable extends mixin<StudentTableProps>() {
 
     render({ students, current, total }: StudentTableProps) {
         return (
-            <Fragment>
+            <>
                 <h2>Student</h2>
 
                 <Table center striped hover>
@@ -95,7 +95,7 @@ export class StudentTable extends mixin<StudentTableProps>() {
                     total={total}
                     onChange={({ detail }) => this.getPage(detail)}
                 />
-            </Fragment>
+            </>
         );
     }
 }

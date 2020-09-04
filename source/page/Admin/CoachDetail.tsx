@@ -8,6 +8,7 @@ import {
 } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { Card } from 'boot-cell/source/Content/Card';
+import { ButtonGroup } from 'boot-cell/source/Form/ButtonGroup';
 import { Button } from 'boot-cell/source/Form/Button';
 
 import { CoachProfile } from '../../component/CoachProfile';
@@ -16,7 +17,7 @@ import {
     Country,
     getCoach,
     verifyCoach,
-    session,
+    history,
     rejectCoach
 } from '../../model';
 import { timeSection } from '../../utility';
@@ -55,18 +56,18 @@ export class AdminCoachProfile extends mixin<{ cid: number }, Coach>() {
     verify = async () => {
         await verifyCoach(this.cid);
 
-        session.push('admin/coaches');
+        history.push('admin/coaches');
     };
 
     reject = async () => {
         await rejectCoach(this.cid);
 
-        session.push('admin/coaches');
+        history.push('admin/coaches');
     };
 
     render(_, coach: Coach) {
         return (
-            <Fragment>
+            <>
                 <CoachProfile {...coach} />
 
                 <Card title={i18nTextOf('available_times')}>
@@ -77,15 +78,15 @@ export class AdminCoachProfile extends mixin<{ cid: number }, Coach>() {
                     </ul>
                 </Card>
 
-                <div className="btn-group d-flex">
-                    <Button kind="success" onClick={this.verify}>
+                <ButtonGroup>
+                    <Button color="success" onClick={this.verify}>
                         通过
                     </Button>
-                    <Button kind="danger" onClick={this.reject}>
+                    <Button color="danger" onClick={this.reject}>
                         拒绝
                     </Button>
-                </div>
-            </Fragment>
+                </ButtonGroup>
+            </>
         );
     }
 }

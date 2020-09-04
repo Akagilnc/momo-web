@@ -1,4 +1,4 @@
-import { createI18nScope } from 'web-cell';
+import { createI18nScope } from 'web-utility';
 
 import { I18nMap } from './en-US';
 

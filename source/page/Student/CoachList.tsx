@@ -1,6 +1,6 @@
 import { component, mixin, on, createCell, Fragment } from 'web-cell';
 import { FormField } from 'boot-cell/source/Form/FormField';
-import { MediaItem } from 'boot-cell/source/Content/MediaItem';
+import { MediaObject } from 'boot-cell/source/Content/MediaObject';
 
 import {
     Coach,
@@ -9,7 +9,7 @@ import {
     meta,
     Gender,
     GenderSymbol,
-    session
+    history
 } from '../../model';
 import { timeSection } from '../../utility';
 import style from '../../component/CoachProfile.less';
@@ -52,12 +52,12 @@ export class CoachList extends mixin<{}, CoachListState>() {
         country,
         fav_topic
     }: Coach) => (
-        <MediaItem
+        <MediaObject
             key={id}
             className="border p-3 mb-3"
             title={`${first_name}·${last_name}`}
             image={<img className={`${style.avatar} mr-3`} src={avatar} />}
-            onClick={() => session.push('student/coach?coachId=' + id)}
+            onClick={() => history.push('student/coach?coachId=' + id)}
         >
             <ul className={`list-unstyled ${style.container}`}>
                 <li>
@@ -73,12 +73,12 @@ export class CoachList extends mixin<{}, CoachListState>() {
                     擅长话题<span>{fav_topic}</span>
                 </li>
             </ul>
-        </MediaItem>
+        </MediaObject>
     );
 
     render(_, { list }: CoachListState) {
         return (
-            <Fragment>
+            <>
                 <h2>教练</h2>
 
                 <details className="my-3">
@@ -116,7 +116,7 @@ export class CoachList extends mixin<{}, CoachListState>() {
                 </details>
 
                 {list.map(this.renderItem)}
-            </Fragment>
+            </>
         );
     }
 }

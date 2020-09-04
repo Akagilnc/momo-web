@@ -3,7 +3,14 @@ import { Card } from 'boot-cell/source/Content/Card';
 import { Button } from 'boot-cell/source/Form/Button';
 
 import { CoachProfile } from '../../component/CoachProfile';
-import { Coach, Country, getCoach, bookCourse, session } from '../../model';
+import {
+    Coach,
+    Country,
+    getCoach,
+    bookCourse,
+    session,
+    history
+} from '../../model';
 import { timeSection } from '../../utility';
 import { i18nTextOf } from '../../i18n';
 
@@ -40,12 +47,12 @@ export class CoachDetail extends mixin<{ coachId: number }, Coach>() {
 
         await session.getCurrentUser();
 
-        session.push('student/profile');
+        history.push('student/profile');
     }
 
     render(_, coach: Coach) {
         return (
-            <Fragment>
+            <>
                 <CoachProfile {...coach} />
 
                 <Card title={i18nTextOf('available_times')}>
@@ -67,7 +74,7 @@ export class CoachDetail extends mixin<{ coachId: number }, Coach>() {
                         })}
                     </div>
                 </Card>
-            </Fragment>
+            </>
         );
     }
 }

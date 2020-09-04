@@ -6,6 +6,7 @@ import { FileInput } from 'boot-cell/source/Form/FileInput';
 import {
     updateCoach,
     session,
+    history,
     Coach,
     Country,
     AvailableTime,
@@ -37,8 +38,8 @@ export class CoachProfileEdit extends mixin<{}, EditState>() {
         try {
             session.setCurrentUser(await updateCoach(data));
 
-            if (!data.get('id')) session.push('login', 'Log in');
-            else session.push('coach', 'Coach Profile');
+            if (!data.get('id')) history.push('login', 'Log in');
+            else history.push('coach', 'Coach Profile');
         } finally {
             this.setState({ loading: false });
         }

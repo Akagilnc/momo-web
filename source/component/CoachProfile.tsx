@@ -1,4 +1,5 @@
 import { createCell } from 'web-cell';
+import { ListGroup, ListItem } from 'boot-cell/source/Content/ListGroup';
 
 import { Coach, GenderSymbol } from '../model';
 import style from './CoachProfile.less';
@@ -17,39 +18,39 @@ export function CoachProfile({
     introduction
 }: Coach) {
     return (
-        <ul className={`list-group ${style.container}`}>
-            <li className="list-group-item">
+        <ListGroup className={style.container}>
+            <ListItem>
                 <img className={style.avatar} src={avatar} />
                 {first_name}·{last_name}
-            </li>
-            <li className="list-group-item">
+            </ListItem>
+            <ListItem>
                 {i18nTextOf('age')}
                 <span>{age}</span>
-            </li>
-            <li className="list-group-item">
+            </ListItem>
+            <ListItem>
                 {i18nTextOf('gender')}
                 <span>{GenderSymbol[sex]}</span>
-            </li>
-            <li className="list-group-item">
+            </ListItem>
+            <ListItem>
                 {i18nTextOf('country')}
                 <span>{country?.name}</span>
-            </li>
-            <li className="list-group-item">
+            </ListItem>
+            <ListItem>
                 {i18nTextOf('phone')}
                 <span>{phone_num}</span>
-            </li>
-            <li className="list-group-item">
+            </ListItem>
+            <ListItem>
                 {i18nTextOf('email')}
                 <span>{email}</span>
-            </li>
-            <li className="list-group-item">
+            </ListItem>
+            <ListItem>
                 {i18nTextOf('favorite_topic')}
                 <span>{fav_topic}</span>
-            </li>
-            <li className="list-group-item">
+            </ListItem>
+            <ListItem>
                 {i18nTextOf('introduction')}
                 <p>{introduction}</p>
-            </li>
-        </ul>
+            </ListItem>
+        </ListGroup>
     );
 }

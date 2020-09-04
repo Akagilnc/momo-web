@@ -12,25 +12,27 @@
         "url": "https://github.com/Akagilnc/momo-web/issues"
     },
     "dependencies": {
-        "boot-cell": "^0.30.0",
+        "boot-cell": "^1.0.1",
+        "bootstrap-icons": "^1.0.0",
         "browser-unhandled-rejection": "^1.0.2",
-        "cell-router": "^2.0.0-rc.6",
+        "cell-router": "^2.0.0",
         "classnames": "^2.2.6",
-        "koajax": "^0.6.0",
-        "mobx": "^5.15.4",
-        "mobx-web-cell": "^0.2.5",
-        "web-cell": "^2.0.0-rc.18"
+        "koajax": "^0.6.2",
+        "mobx": "^5.15.6",
+        "mobx-web-cell": "^0.3.2",
+        "web-cell": "^2.2.0",
+        "web-utility": "^1.8.0"
     },
     "devDependencies": {
-        "@types/classnames": "^2.2.9",
-        "autoprefixer": "^9.7.4",
-        "husky": "^4.2.3",
-        "less": "^3.11.1",
-        "lint-staged": "^10.0.7",
+        "@types/classnames": "^2.2.10",
+        "autoprefixer": "^9.8.6",
+        "husky": "^4.2.5",
+        "less": "^3.12.2",
+        "lint-staged": "^10.3.0",
         "parcel-bundler": "^1.12.4",
-        "postcss-modules": "^1.5.0",
-        "prettier": "^1.19.1",
-        "typescript": "^3.7.5"
+        "postcss-modules": "^3.2.2",
+        "prettier": "^2.1.1",
+        "typescript": "^4.0.2"
     },
     "scripts": {
         "clean": "rm -rf .cache/ dist/",
@@ -51,6 +53,8 @@
     },
     "prettier": {
         "singleQuote": true,
+        "trailingComma": "none",
+        "arrowParens": "avoid",
         "tabWidth": 4
     },
     "postcss": {

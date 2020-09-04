@@ -1,10 +1,11 @@
-import { component, createCell, Fragment } from 'web-cell';
+import { component, createCell, Fragment, mixin } from 'web-cell';
 import { observer } from 'mobx-web-cell';
-import { HTMLRouter } from 'cell-router/source';
+import { CellRouter } from 'cell-router/source';
 import { NavBar } from 'boot-cell/source/Navigator/NavBar';
-import { DropMenu } from 'boot-cell/source/Navigator/DropMenu';
+import { NavLink } from 'boot-cell/source/Navigator/Nav';
+import { DropMenu, DropMenuItem } from 'boot-cell/source/Navigator/DropMenu';
 
-import { session, UserRole } from '../model';
+import { UserRole, session, history } from '../model';
 
 import PageLogin from './PageLogin';
 import { CoachProfilePage, CoachProfileEdit, LessonList } from './Coach';
@@ -21,8 +22,7 @@ import { CoachTable, AdminCoachProfile, StudentTable, MetaData } from './Admin';
     tagName: 'page-router',
     renderTarget: 'children'
 })
-export default class PageRouter extends HTMLRouter {
-    protected history = session;
+export default class PageRouter extends mixin() {
     protected routes = [
         {
             paths: ['login'],
@@ -117,27 +117,32 @@ export default class PageRouter extends HTMLRouter {
         } = session;
 
         return (
-            <Fragment>
-                <NavBar
-                    brand="Momo Chat"
-                    menu={this.menu.filter(item => session.hasRole(item.group))}
-                >
+            <>
+                <NavBar brand="Momo Chat">
+                    {this.menu.map(({ group, title, ...rest }) =>
+                        !session.hasRole(group) ? null : (
+                            <NavLink {...rest}>{title}</NavLink>
+                        )
+                    )}
                     {group && (
                         <DropMenu
-                            title={username || phone_num}
+                            caption={username || phone_num}
                             alignType="right"
                             alignSize="md"
-                            list={[
-                                {
-                                    title: 'Sign out',
-                                    onClick: () => session.destroy()
-                                }
-                            ]}
-                        />
+                        >
+                            <DropMenuItem onClick={() => session.destroy()}>
+                                Sign out
+                            </DropMenuItem>
+                        </DropMenu>
                     )}
                 </NavBar>
-                <main className="container mt-5 py-3">{super.render()}</main>
-            </Fragment>
+
+                <CellRouter
+                    className="container py-3"
+                    history={history}
+                    routes={this.routes}
+                />
+            </>
         );
     }
 }

@@ -12,7 +12,7 @@ import { session, Coach, GenderSymbol } from '../../model';
 export class LessonList extends mixin() {
     render() {
         return (
-            <Fragment>
+            <>
                 <h2>Lessons</h2>
 
                 {(session.user as Coach).courses?.map(
@@ -32,7 +32,7 @@ export class LessonList extends mixin() {
                         </Card>
                     )
                 )}
-            </Fragment>
+            </>
         );
     }
 }
