@@ -1,7 +1,7 @@
 import { createCell, component, mixin, Fragment } from 'web-cell';
 import { observer } from 'mobx-web-cell';
 import { Button } from 'boot-cell/source/Form/Button';
-import { Table } from 'boot-cell/source/Content/Table';
+import { Table, TableRow } from 'boot-cell/source/Content/Table';
 import { FormField } from 'boot-cell/source/Form/FormField';
 
 import { WeekDay, formatTime } from '../../utility';
@@ -52,7 +52,7 @@ export class MetaData extends mixin<{}, MetaState>() {
         end_time,
         max_kids
     }: AvailableTime) => (
-        <tr>
+        <TableRow>
             <td>{WeekDay[day - 1]}</td>
             <td>{formatTime(start_time)}</td>
             <td>{formatTime(end_time)}</td>
@@ -62,7 +62,7 @@ export class MetaData extends mixin<{}, MetaState>() {
                     Delete
                 </Button>
             </td>
-        </tr>
+        </TableRow>
     );
 
     render(_, { timeLoading }: MetaState) {
@@ -75,18 +75,14 @@ export class MetaData extends mixin<{}, MetaState>() {
                         <legend>Available times</legend>
 
                         <Table center striped hover>
-                            <thead>
-                                <tr>
-                                    <th>Day of Week</th>
-                                    <th>Start</th>
-                                    <th>End</th>
-                                    <th>Max Kids</th>
-                                    <th>Operation</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {meta.availableTimes.map(this.renderItem)}
-                            </tbody>
+                            <TableRow type="head">
+                                <th>Day of Week</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Max Kids</th>
+                                <th>Operation</th>
+                            </TableRow>
+                            {meta.availableTimes.map(this.renderItem)}
                         </Table>
 
                         <FormField

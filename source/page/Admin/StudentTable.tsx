@@ -1,5 +1,5 @@
 import { component, mixin, watch, createCell, Fragment } from 'web-cell';
-import { Table } from 'boot-cell/source/Content/Table';
+import { Table, TableRow } from 'boot-cell/source/Content/Table';
 import { Pagination } from 'boot-cell/source/Navigator/Pagination';
 import { ToggleField } from 'boot-cell/source/Form/ToggleField';
 
@@ -52,7 +52,7 @@ export class StudentTable extends mixin<StudentTableProps>() {
     }
 
     renderItem = ({ full_name, age, sex, phone_num, status, id }: Student) => (
-        <tr>
+        <TableRow>
             <td>{full_name}</td>
             <td>{age}</td>
             <td>{GenderSymbol[sex]}</td>
@@ -69,7 +69,7 @@ export class StudentTable extends mixin<StudentTableProps>() {
                     Enable
                 </ToggleField>
             </td>
-        </tr>
+        </TableRow>
     );
 
     render({ students, current, total }: StudentTableProps) {
@@ -78,16 +78,14 @@ export class StudentTable extends mixin<StudentTableProps>() {
                 <h2>Student</h2>
 
                 <Table center striped hover>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Telephone</th>
-                            <th>Operation</th>
-                        </tr>
-                    </thead>
-                    <tbody>{students.map(this.renderItem)}</tbody>
+                    <TableRow type="head">
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Telephone</th>
+                        <th>Operation</th>
+                    </TableRow>
+                    {students.map(this.renderItem)}
                 </Table>
 
                 <Pagination

@@ -1,7 +1,7 @@
 import { createCell, component, mixin, watch, Fragment } from 'web-cell';
 import { Image } from 'boot-cell/source/Media/Image';
 import { Badge } from 'boot-cell/source/Reminder/Badge';
-import { Table } from 'boot-cell/source/Content/Table';
+import { Table, TableRow } from 'boot-cell/source/Content/Table';
 import { Pagination } from 'boot-cell/source/Navigator/Pagination';
 
 import { Coach, getCoaches, GenderSymbol } from '../../model';
@@ -53,7 +53,7 @@ export class CoachTable extends mixin<CoachTableProps>() {
         status,
         id
     }: Coach) => (
-        <tr>
+        <TableRow>
             <td>
                 <Image thumbnail src={avatar} />
             </td>
@@ -85,7 +85,7 @@ export class CoachTable extends mixin<CoachTableProps>() {
                     Verified
                 </Badge>
             </td>
-        </tr>
+        </TableRow>
     );
 
     render({ coaches, current, total }: CoachTableProps) {
@@ -94,20 +94,18 @@ export class CoachTable extends mixin<CoachTableProps>() {
                 <h2>Coach</h2>
 
                 <Table center striped hover>
-                    <thead>
-                        <tr>
-                            <th>Avatar</th>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Country</th>
-                            <th>Telephone</th>
-                            <th>Email</th>
-                            <th>Favorite topic</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>{coaches.map(this.renderItem)}</tbody>
+                    <TableRow type="head">
+                        <th>Avatar</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Country</th>
+                        <th>Telephone</th>
+                        <th>Email</th>
+                        <th>Favorite topic</th>
+                        <th>Status</th>
+                    </TableRow>
+                    {coaches.map(this.renderItem)}
                 </Table>
 
                 <Pagination
